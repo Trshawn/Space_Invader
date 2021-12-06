@@ -166,4 +166,4 @@ if __name__ == '__main__':
         player.move_player()
         show_enemy()
         check_is_over()
- 
+        pygame.display.update()
