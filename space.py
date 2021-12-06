@@ -73,6 +73,11 @@ def hit(bullet):
             e.reset()
             break
 
+#定义精灵组由两个图片组成来制造移动而不会断层
+background1=background_sound()
+background2=background_sound()
+background2.rect.y = -background2.rect.height
+bg_group = pygame.sprite.Group(background1, background2)
 
 font=pygame.font.Font('freesansbold.ttf',32)
 is_over=False
@@ -109,7 +114,11 @@ if __name__ == '__main__':
 
     running = True
     while running:
-        screen.blit(bgImg.img,(0,0))
+        #update方法定义在background_sound包中
+        #定义的是背景的移动
+        bg_group.update()
+        #draw为动画精灵的方法
+        bg_group.draw(screen)
         show_score()
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
