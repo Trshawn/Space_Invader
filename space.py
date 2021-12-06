@@ -167,3 +167,5 @@ if __name__ == '__main__':
         show_enemy()
         check_is_over()
         pygame.display.update()
+
+# 1
