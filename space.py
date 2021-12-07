@@ -37,14 +37,14 @@ for i in range(number_of_enemies):
 def game_stage():
     global score
     global number_of_enemies
-    if score == 20 and number_of_enemies != 4:
+    if score == 20 and len(enemies) == 2:
         enemies.clear()
         for i in range(number_of_enemies):
             Monster = Enemy()
             number_of_enemies = 4
             enemies.append(Monster)
         return
-    if score == 40 and number_of_enemies != 6:
+    if score == 40 and len(enemies) == 4:
         enemies.clear()
         for i in range(number_of_enemies):
             Monster = Enemy()
@@ -90,6 +90,7 @@ def show_enemy():
 
 # 子弹
 bullets=[]
+special_bullets = 3 # 清屏子弹 数量上限
 
 def show_bullets():
     global screen
@@ -122,7 +123,7 @@ is_over=False
 
 # 显示分数
 def show_score():
-    text=f"Score:{score}"
+    text=f"Score:{score}, BB:{special_bullets}"
     score_render=font.render(text,True,(255,255,255))
     screen.blit(score_render,(10,10))
 
@@ -156,16 +157,16 @@ if __name__ == '__main__':
         #draw为动画精灵的方法
         bg_group.draw(screen)
         show_score()
-        game_stage()
+        
         for event in pygame.event.get():
-            if event.type==pygame.QUIT:
+            if event.type == pygame.QUIT:
                 running = False
 
-            if event.type==pygame.KEYDOWN:
-                if event.key==pygame.K_RIGHT:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
                     player.horizontal=5
                     flag_RIGHT=1
-                if event.key==pygame.K_LEFT:
+                if event.key == pygame.K_LEFT:
                     player.horizontal=-5
                     flag_LEFT=1
                 if event.key == pygame.K_UP:
@@ -174,35 +175,39 @@ if __name__ == '__main__':
                 if event.key == pygame.K_DOWN:
                     player.vertical = 5
                     flag_DOWN=1
-                if event.key==pygame.K_SPACE:
+                if event.key == pygame.K_SPACE:
                     print("发射子弹...")
                     bullets.append(Bullet(player.x, player.y))
+                if event.key == pygame.K_r and special_bullets > 0: # 清屏炸弹
+                    score += number_of_enemies * 5
+                    for e in enemies:
+                        e.reset()
+                    special_bullets -= 1
 
-
-            elif event.type==pygame.KEYUP:
-                if event.key!=pygame.K_SPACE:
-                    if event.key==pygame.K_RIGHT:
-                        flag_RIGHT=0
-                        if flag_LEFT==0:
+            elif event.type == pygame.KEYUP:
+                if event.key != pygame.K_SPACE:
+                    if event.key == pygame.K_RIGHT:
+                        flag_RIGHT = 0
+                        if flag_LEFT == 0:
                             player.horizontal = 0
                         else:
                             player.horizontal = -5
-                    if event.key==pygame.K_LEFT:
-                        flag_LEFT=0
-                        if flag_RIGHT==0:
+                    if event.key == pygame.K_LEFT:
+                        flag_LEFT = 0
+                        if flag_RIGHT == 0:
                             player.horizontal = 0
                         else:
                             player.horizontal = 5
-                    if event.key==pygame.K_DOWN:
-                        flag_DOWN=0
-                        if flag_UP==0:
+                    if event.key == pygame.K_DOWN:
+                        flag_DOWN = 0
+                        if flag_UP == 0:
                             player.vertical = 0
                         else:
                             player.vertical = 5
-                    if event.key==pygame.K_UP:
-                        flag_UP=0
-                        if flag_DOWN==0:
-                            player.vertical=0
+                    if event.key == pygame.K_UP:
+                        flag_UP = 0
+                        if flag_DOWN == 0:
+                            player.vertical = 0
                         else:
                             player.vertical = -5
         
@@ -211,5 +216,6 @@ if __name__ == '__main__':
 
         player.move_player()
         show_enemy()
+        game_stage()
         check_is_over()
         pygame.display.update()
