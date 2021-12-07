@@ -2,14 +2,11 @@ import pygame
 
 #新加入了动画精灵用super调用精灵初始化
 class background_sound(pygame.sprite.Sprite):
-    def __init__(self,speed=1,img='./Background/bg.png',sound='./Background/bg.wav'):
+    def __init__(self,speed=1,img='./Background/bg.png'):
         super().__init__()
         self.image=pygame.image.load(img)
-        self.sound=pygame.mixer.music.load(sound)
         self.speed=speed
         self.rect = self.image.get_rect()
-        pygame.mixer.music.play(-1)
-        
 
     def update(self):
         self.rect.y+=self.speed
