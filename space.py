@@ -88,6 +88,13 @@ def show_enemy():
         # 如果敌人飞出游戏界面，重置敌人
         if e.y > 600:
             e.reset()
+#定义boss的渐入效果并且停留在一个地方不动
+boss=Boss()
+def show_boss():
+    screen.blit(boss.image,(boss.x,boss.y))
+    boss.update()
+    if boss.y>100:
+        boss.y=100
 
 # 子弹
 bullets=[]
@@ -148,8 +155,6 @@ flag_DOWN=0
 flag_LEFT=0
 flag_UP=0
 
-boss = Boss()
-boss_group=pygame.sprite.Group(boss)
 
 if __name__ == '__main__':
 
@@ -217,8 +222,7 @@ if __name__ == '__main__':
         
         show_bullets()
         screen.blit(player.img,(player.x,player.y))
-        boss_group.update()
-        boss_group.draw(screen)
+        show_boss()
         player.move_player()
         show_enemy()
         game_stage()
