@@ -3,12 +3,13 @@ import pygame
 WIDTH = pygame.image.load("./Background/bg.png").get_width()
 HEIGHT = pygame.image.load("./Background/bg.png").get_height()
 
+
 class Planeplayer():
 
-    def __init__(self, x, y, img="./Plane/player.png"):
-        self.x = x
-        self.y = y
+    def __init__(self, img="./Plane/player.png"):
         self.img = pygame.image.load(img)
+        self.x = (WIDTH - self.img.get_width()) /2
+        self.y = HEIGHT - self.img.get_height() - 50
         self.horizontal = 0
         self.vertical = 0
 

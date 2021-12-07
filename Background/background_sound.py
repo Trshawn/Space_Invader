@@ -1,7 +1,7 @@
 import pygame
 
-#新加入了动画精灵用super调用精灵初始化
-class background_sound(pygame.sprite.Sprite):
+
+class Background(pygame.sprite.Sprite):
     def __init__(self,speed=1,img='./Background/bg.png'):
         super().__init__()
         self.image=pygame.image.load(img)

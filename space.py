@@ -37,13 +37,13 @@ class Game:
         self.explosion = pygame.mixer.Sound('./Sound Effect/exp.wav')
 
         # Init background
-        background1 = background_sound()
-        background2 = background_sound()
+        background1 = Background()
+        background2 = Background()
         background2.rect.y = -background2.rect.height
         self.bg_group = pygame.sprite.Group(background1, background2)
 
         # Init player
-        self.player = Planeplayer(400, 500)
+        self.player = Planeplayer()
 
         # Init bullets
         self.bullets = []
@@ -56,9 +56,6 @@ class Game:
         for i in range(self.number_of_enemies):
             self.Monster = Enemy()
             self.enemies.append(self.Monster)
-
-        # Init boss
-        self.boss = Boss()
 
         # Others
         self.score = 0
@@ -142,6 +139,9 @@ class Game:
                 self.number_of_enemies = 6
                 self.enemies.append(self.Monster)
             return
+        if self.score == 100 and len(self.enemies) == 6:
+            # Init boss
+            self.boss = Boss()
 
     def show_bullets(self):
         for b in self.bullets:
@@ -218,22 +218,42 @@ class Game:
             render = self.over_font.render(text, True, (255, 255, 0))
             self.screen.blit(render, (200, 250))
 
+    def refresh(self):
+
+        # refresh background
+        self.bg_group.update()
+        self.bg_group.draw(self.screen)
+        self.bg_group.update()
+        self.bg_group.draw(self.screen)
+
+        # refresh player
+        self.screen.blit(self.player.img, (self.player.x, self.player.y))
+
+        # refresh objects
+        self.show_bullets()
+        self.show_enemy()
+        try:
+            self.show_boss()
+        except:
+            pass
+
+        # refresh score
+        self.show_score()
+
+        # check
+        self.check_is_over()
+
+        # update screen
+        pygame.display.update()
+
     def start_game(self):
 
         while True:
-            self.clock.tick(self.FRAME)
+            # self.clock.tick(self.FRAME)
             self.handle_events()
-            self.bg_group.update()
-            self.bg_group.draw(self.screen)
-            self.screen.blit(self.player.img, (self.player.x, self.player.y))
-            self.player.move_player()
-            self.show_bullets()
-            self.show_enemy()
-            self.show_boss()
-            self.show_score()
             self.game_stage()
-            self.check_is_over()
-            pygame.display.update()
+            self.player.move_player()
+            self.refresh()
 
 
 if __name__ == '__main__':
