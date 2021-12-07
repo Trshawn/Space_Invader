@@ -4,10 +4,10 @@ import random
 class Enemy():
     def __init__(self,img="./Enemy/enemy.png"):
         self.enemyImg=pygame.image.load(img)
-        self.x=random.randint(200,600)
-        self.y=random.randint(50,250)
-        self.step=random.randint(2,6)
+        self.x=random.randint(50,750)
+        self.y=random.randint(50,150)
+        self.step=0.7
 
     def reset(self):
-        self.x=random.randint(200,600)
-        self.y=random.randint(50,250)
+        self.x=random.randint(50,750)
+        self.y=random.randint(50,150)

@@ -25,33 +25,70 @@ bao_sound=pygame.mixer.Sound('./Sound Effect/exp.wav')
 #导入包中的player并且设置位置
 player=Planeplayer(400,500)
 
-number_of_enemies=6
+number_of_enemies=2
 enemies=[]
 
-#添加敌人
+score=0
 for i in range(number_of_enemies):
-    #导入Enemy包命名为Monster并apped到list中
-    Monster=Enemy()
-    enemies.append(Monster)
+    Monster = Enemy()
+    enemies.append(Monster)  
+
+# 游戏难度
+def game_stage():
+    global score
+    global number_of_enemies
+    if score == 20 and number_of_enemies != 4:
+        enemies.clear()
+        for i in range(number_of_enemies):
+            Monster = Enemy()
+            number_of_enemies = 4
+            enemies.append(Monster)
+        return
+    if score == 40 and number_of_enemies != 6:
+        enemies.clear()
+        for i in range(number_of_enemies):
+            Monster = Enemy()
+            number_of_enemies = 6
+            enemies.append(Monster)
+        return
 
 
+# 敌人显示
+type_move = random.randint(1,3)
 def show_enemy():
     global is_over
+    type_move = random.randint(1,3)
     for e in enemies:
         screen.blit(e.enemyImg,(e.x,e.y))
-        e.x+=e.step
-        if(e.x>736 or e.x<0):
-            e.step*=-1
-            e.y+=40
-        if e.y>450:
-            is_over=True
-            enemies.clear()
-        if distance(e.x,e.y,player.x,player.y)<30:
+        # 敌人随机路线
+        ## 直线移动
+        if type_move == 1:
+            e.y += e.step
+        ## 斜线移动
+        if e.x <= 400:
+            if type_move == 2:
+                e.x += e.step * random.uniform(0.5,1)
+                e.y += e.step * random.uniform(0.8,1)
+        elif e.x > 400:
+            if type_move == 2:
+                e.x -= e.step * random.uniform(0.5,1)
+                e.y += e.step * random.uniform(0.8,1)
+        ## 左右移动，直到被击毁
+        if type_move == 3:
+            if e.x < 50:
+                e.x += e.step
+            elif e.x > 750:
+                e.x -= e.step
+        # 检测敌人与玩家距离
+        if distance(e.x,e.y,player.x,player.y)<25:
             bao_sound.play()
             is_over=True
             enemies.clear()
+        # 如果敌人飞出游戏界面，重置敌人
+        if e.y > 600:
+            e.reset()
 
-
+# 子弹
 bullets=[]
 
 def show_bullets():
@@ -63,12 +100,13 @@ def show_bullets():
         if b.y < 0:
             bullets.remove(b)
 
+# 子弹命中
 def hit(bullet):
     global score
     for e in enemies:
         if distance(bullet.x, bullet.y, e.x, e.y) < 30:
             bao_sound.play()
-            score += 1
+            score += 5
             bullets.remove(bullet)
             e.reset()
             break
@@ -76,18 +114,16 @@ def hit(bullet):
 
 font=pygame.font.Font('freesansbold.ttf',32)
 is_over=False
-score=0
 
-
+# 显示分数
 def show_score():
     text=f"Score:{score}"
     score_render=font.render(text,True,(255,255,255))
     screen.blit(score_render,(10,10))
 
-
 over_font=pygame.font.Font('freesansbold.ttf',64)
 
-
+# 检测游戏是否结束
 def check_is_over():
     if is_over:
         text="Game Over"
@@ -111,6 +147,7 @@ if __name__ == '__main__':
     while running:
         screen.blit(bgImg.img,(0,0))
         show_score()
+        game_stage()
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 running = False
@@ -167,5 +204,3 @@ if __name__ == '__main__':
         show_enemy()
         check_is_over()
         pygame.display.update()
-
-# 1
