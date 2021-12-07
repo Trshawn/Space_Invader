@@ -6,6 +6,7 @@ from Background.background_sound import *
 from Enemy.enemies import *
 from Plane.player import *
 from Bullet.bullets import *
+from Enemy.boss import *
 
 
 #初始化界面
@@ -147,6 +148,9 @@ flag_DOWN=0
 flag_LEFT=0
 flag_UP=0
 
+boss = Boss()
+boss_group=pygame.sprite.Group(boss)
+
 if __name__ == '__main__':
 
     running = True
@@ -213,7 +217,8 @@ if __name__ == '__main__':
         
         show_bullets()
         screen.blit(player.img,(player.x,player.y))
-
+        boss_group.update()
+        boss_group.draw(screen)
         player.move_player()
         show_enemy()
         game_stage()
