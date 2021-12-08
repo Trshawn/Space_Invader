@@ -190,6 +190,7 @@ class Game:
                         self.enemies.append(Monster) 
                     self.player=Planeplayer()
                     self.score = 0
+                    self.special_bullets = 3
                     self.start_game()
                     
                 
@@ -204,6 +205,7 @@ class Game:
                     #    e.reset()
                     #    e.step = 0.7
                     self.score = 0
+                    self.special_bullets = 3
                     self.is_over = False
                     self.start_game()
                 
