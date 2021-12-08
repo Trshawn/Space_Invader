@@ -68,6 +68,7 @@ class Game:
         self.over_font = pygame.font.Font('freesansbold.ttf', 64)
         self.font = pygame.font.Font('freesansbold.ttf', 32)
         self.is_over = False
+        self.success = False
 
         self.flag_RIGHT = 0
         self.flag_DOWN = 0
@@ -271,8 +272,13 @@ class Game:
                             else:
                                 self.player.vertical = -5
 
-                elif event.type == BOSS_BULLETS_EVENT and self.boss_flag and self.boss.y > -50:
-                    self.boss_bullets.append(BossBullet(self.boss.x+self.boss.image.get_width()/2-25, self.boss.y+self.boss.image.get_height()-25))
+                elif event.type == BOSS_BULLETS_EVENT and self.boss_flag and self.boss.y > -50 and self.boss.health > 0:
+                    self.boss_bullets.append(BossBullet(self.boss.x+self.boss.image.get_width()/2-25,
+                                                        self.boss.y+self.boss.image.get_height()-25, 0))
+                    self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
+                                                        self.boss.y + self.boss.image.get_height() - 25, 1))
+                    self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
+                                                        self.boss.y + self.boss.image.get_height() - 25, -1))
 
     # 游戏难度
     def game_stage(self):
@@ -290,7 +296,7 @@ class Game:
                 self.number_of_enemies = 6
                 self.enemies.append(self.Monster)
             return
-        if self.score == 50 and len(self.enemies) == 6:
+        if self.score == 45 and len(self.enemies) == 6:
             # Init boss
             self.boss = Boss()
             self.boss_flag = True
@@ -300,6 +306,12 @@ class Game:
             self.screen.blit(b.bulletImg, (b.x, b.y))
             self.hit(b)
             b.y -= b.step
+            try:
+                if self.distance(b.x, b.y, self.boss.x, self.boss.y) < 50:
+                    self.boss.health -= 1
+                    self.bullets.remove(b)
+                    print(f"health -= 1\nhealth:{self.boss.health}")
+            except: pass
             if b.y < 0:
                 self.bullets.remove(b)
 
@@ -348,8 +360,9 @@ class Game:
                 e.reset()
 
     def show_boss(self):
-        if self.boss.y > 70:
-            self.boss.y = 70
+        if self.boss.health == 0:
+            self.success = True
+            self.enemies.clear()
         self.screen.blit(self.boss.image, (self.boss.x, self.boss.y))
         self.boss.update()
 
@@ -376,11 +389,15 @@ class Game:
         self.screen.blit(score_render, (10, 10))
 
     # 检测游戏是否结束
-    def check_is_over(self):
+    def check(self):
         if self.is_over:
             text = "Game Over"
             render = self.over_font.render(text, True, (255, 255, 0))
             self.screen.blit(render, (200, 250))
+        if self.success:
+            text = "You Win"
+            render = self.over_font.render(text, True, (255, 255, 0))
+            self.screen.blit(render, (self.SCREEN_WIDTH/2 - 100, self.SCREEN_HEIGHT/2 - 50))
 
     def refresh(self):
 
@@ -402,7 +419,7 @@ class Game:
         except:
             pass
 
-        #refresh menu button
+        # refresh menu button
         self.screen.blit(self.pause_image, self.pause_rect)
         self.screen.blit(self.pause2_image,self.pause2_rect)
 
@@ -417,9 +434,10 @@ class Game:
             self.screen.blit(self.back_home_image,self.back_home_rect)
 
         # check
-        self.check_is_over()
+        self.check()
         if self.is_over:
             self.screen.blit(self.restart_image, self.restart_rect)
+
         # update screen
         pygame.display.update()
 
