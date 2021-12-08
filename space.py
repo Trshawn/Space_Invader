@@ -128,9 +128,6 @@ class Game:
         start_button_rect.left, start_button_rect.top = 350,300
         self.screen.blit(self.start_image,start_button_rect)
 
-        intro_button_rect = self.start_image.get_rect()
-        intro_button_rect.left, intro_button_rect.top = 350,400
-        self.screen.blit(self.intro_image,intro_button_rect)
 
         ex_button_rect = self.ex_image.get_rect()
         ex_button_rect.left, ex_button_rect.top = 350,500
