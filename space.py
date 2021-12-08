@@ -272,7 +272,7 @@ class Game:
                             else:
                                 self.player.vertical = -5
 
-                elif event.type == BOSS_BULLETS_EVENT and self.boss_flag:
+                elif event.type == BOSS_BULLETS_EVENT and self.boss_flag and self.boss.y > -50:
                     self.boss_bullets.append(BossBullet(self.boss.x+self.boss.image.get_width()/2-25, self.boss.y+self.boss.image.get_height()-25))
 
     # 游戏难度
@@ -359,6 +359,12 @@ class Game:
         for b in self.boss_bullets:
             self.screen.blit(b.img, (b.x, b.y))
             b.update()
+            if b.y > self.SCREEN_HEIGHT:
+                self.boss_bullets.remove(b)
+            if self.distance(b.x, b.y, self.player.x, self.player.y) < 50:
+                self.explosion.play()
+                self.is_over = True
+                self.enemies.clear()
 
     def distance(self, bx, by, ex, ey):
         a = bx - ex
