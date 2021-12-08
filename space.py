@@ -7,6 +7,7 @@ from Enemy.enemies import *
 from Plane.player import *
 from Bullet.bullets import *
 from Enemy.boss import *
+from Bullet.boss_bullets import *
 
 
 class Game:
@@ -56,6 +57,10 @@ class Game:
         for i in range(self.number_of_enemies):
             self.Monster = Enemy()
             self.enemies.append(self.Monster)
+
+        self.boss_flag=False
+        self.boss_bullets = []
+        pygame.time.set_timer(BOSS_BULLETS_EVENT, 200)
 
         # Others
         self.score = 0
@@ -123,6 +128,9 @@ class Game:
                         else:
                             self.player.vertical = -5
 
+            elif event.type == BOSS_BULLETS_EVENT and self.boss_flag:
+                self.boss_bullets.append(BossBullet(self.boss.x+self.boss.image.get_width()/2-25, self.boss.y+self.boss.image.get_height()-25))
+
     # 游戏难度
     def game_stage(self):
         if self.score == 20 and len(self.enemies) == 2:
@@ -139,9 +147,10 @@ class Game:
                 self.number_of_enemies = 6
                 self.enemies.append(self.Monster)
             return
-        if self.score == 100 and len(self.enemies) == 6:
+        if self.score == 50 and len(self.enemies) == 6:
             # Init boss
             self.boss = Boss()
+            self.boss_flag = True
 
     def show_bullets(self):
         for b in self.bullets:
@@ -195,10 +204,15 @@ class Game:
                 e.reset()
 
     def show_boss(self):
+        if self.boss.y > 70:
+            self.boss.y = 70
         self.screen.blit(self.boss.image, (self.boss.x, self.boss.y))
         self.boss.update()
-        if self.boss.y > 100:
-            self.boss.y = 100
+
+    def show_boss_bullets(self):
+        for b in self.boss_bullets:
+            self.screen.blit(b.img, (b.x, b.y))
+            b.update()
 
     def distance(self, bx, by, ex, ey):
         a = bx - ex
@@ -234,6 +248,7 @@ class Game:
         self.show_enemy()
         try:
             self.show_boss()
+            self.show_boss_bullets()
         except:
             pass
 
