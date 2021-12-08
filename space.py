@@ -146,44 +146,9 @@ class Game:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button==1 and start_button_rect.collidepoint(event.pos):
                         flag = False
-                    if event.button==1 and intro_button_rect.collidepoint(event.pos):
-                        self.intro()
-                        return
                     if event.button==1 and ex_button_rect.collidepoint(event.pos):
                         pygame.quit()
                         exit()
-    #游戏介绍
-    def intro(self):
-        self.screen.blit(self.bgImg_menu,(0,0))
-        text="How to play"
-        text1= "1. Use keyboard Arrow key:"
-        text2 = "UP, DOWN, LEFT AND RIGHT to move"
-        text3="2. Use space key to fire bullets"
-
-        intro_render=self.font.render(text,True,(255,255,255))
-        intro_render1=self.font.render(text1,True,(255,255,255))
-        intro_render2=self.font.render(text2,True,(255,255,255))
-        intro_render3=self.font.render(text3,True,(255,255,255))
-
-        self.screen.blit(intro_render,(320,10))
-        self.screen.blit(intro_render1,(10,100))
-        self.screen.blit(intro_render2,(90,200))
-        self.screen.blit(intro_render3,(10,300))
-
-        back_button_rect = self.back_image.get_rect()
-        back_button_rect.left, back_button_rect.top = 700,550
-        self.screen.blit(self.back_image,back_button_rect)
-        pygame.display.update()
-        is_intro = True
-        while is_intro:
-            for event in pygame.event.get():
-
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    exit()
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button==1 and back_button_rect.collidepoint(event.pos):
-                        self.menu()
                     
     def handle_events(self):
 
