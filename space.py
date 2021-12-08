@@ -236,7 +236,7 @@ class Game:
                     if event.key == pygame.K_DOWN:
                         self.player.vertical = 5
                         self.flag_DOWN = 1
-                    if event.key == pygame.K_SPACE:
+                    if event.key == pygame.K_SPACE and not self.is_over and not self.success:
                         print("发射子弹...")
                         self.bullets.append(Bullet(self.player.x, self.player.y))
                     if event.key == pygame.K_r and self.special_bullets > 0:  # 清屏炸弹
