@@ -214,9 +214,12 @@ class Game:
                     if self.pause2:
                         self.pause2_image = self.audio_on_image
                         pygame.mixer.music.stop()
+                        
                     else:
                         self.pause2_image = self.audio_off_image
                         pygame.mixer.music.play(-1)
+                        self.explosion = pygame.mixer.Sound('./Sound Effect/exp.wav')
+
             if not self.pause:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RIGHT:
@@ -304,7 +307,8 @@ class Game:
     def hit(self, bullet):
         for e in self.enemies:
             if self.distance(bullet.x, bullet.y, e.x, e.y) < 30:
-                self.explosion.play()
+                if self.pause2==False:
+                    self.explosion.play()
                 self.score += 5
                 self.bullets.remove(bullet)
                 e.reset()
