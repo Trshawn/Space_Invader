@@ -8,6 +8,7 @@ from Plane.player import *
 from Bullet.bullets import *
 from Enemy.boss import *
 from Bullet.boss_bullets import *
+from pygame.constants import MOUSEBUTTONDOWN, MOUSEMOTION
 
 
 class Game:
@@ -73,6 +74,117 @@ class Game:
         self.flag_LEFT = 0
         self.flag_UP = 0
 
+        # menu
+        self.bgImg_menu = pygame.image.load('./Background/bg.png')
+
+        self.start_image = pygame.image.load("./Menu/resume_nor.png").convert_alpha()
+        self.intro_image = pygame.image.load("./Menu/resume_nor.png").convert_alpha()
+        self.ex_image = pygame.image.load("./Menu/resume_nor.png").convert_alpha()
+        self.back_image = pygame.image.load("./Menu/resume_nor.png").convert_alpha()
+
+        self.menu_image = pygame.image.load("./Menu/menu.png").convert_alpha()
+        self.menu_rect = self.menu_image.get_rect()
+        self.menu_rect.left,self.menu_rect.top = 300,100
+
+        self.menu_resume_image = pygame.image.load("./Menu/menu_resume.png").convert_alpha()
+        self.menu_resume_rect = self.menu_resume_image.get_rect()
+        self.menu_resume_rect.left,self.menu_resume_rect.top = 400,200
+
+        self.menu_quit_image = pygame.image.load("./Menu/quitgame_nor.png").convert_alpha()
+        self.menu_quit_rect = self.menu_quit_image.get_rect()
+        self.menu_quit_rect.left,self.menu_quit_rect.top = 400,300
+
+        self.back_home_image = pygame.image.load("./Menu/home.png").convert_alpha()
+        self.back_home_rect = self.back_home_image.get_rect()
+        self.back_home_rect.left,self.back_home_rect.top = 400,400
+
+        # restart
+        self.restart_image = pygame.image.load("./Menu/restart.png").convert_alpha()
+        self.restart_rect = self.restart_image.get_rect()
+        self.restart_rect.left,self.restart_rect.top = 400,200
+
+        #game pause
+        self.pause = False
+        self.game_play_image = pygame.image.load("./Menu/game_play.png").convert_alpha()
+        self.game_pause_image = pygame.image.load("./Menu/game_pause.png").convert_alpha()
+        self.audio_on_image = pygame.image.load("./Menu/audio_on.png").convert_alpha()
+        self.audio_off_image = pygame.image.load("./Menu/audio_off.png").convert_alpha()
+
+        self.pause_rect = self.game_pause_image.get_rect()
+        self.pause_rect.left, self.pause_rect.top = 700,10
+        self.pause_image = self.game_pause_image
+
+         # pause music
+        self.pause2 = False
+
+        self.pause2_rect = self.audio_off_image.get_rect()
+        self.pause2_rect.left, self.pause2_rect.top = 700,550
+        self.pause2_image = self.audio_off_image
+
+    def menu(self):
+    
+        self.screen.blit(self.bgImg_menu,(0,0))
+        start_button_rect = self.start_image.get_rect()
+        start_button_rect.left, start_button_rect.top = 350,300
+        self.screen.blit(self.start_image,start_button_rect)
+
+        intro_button_rect = self.start_image.get_rect()
+        intro_button_rect.left, intro_button_rect.top = 350,400
+        self.screen.blit(self.intro_image,intro_button_rect)
+
+        ex_button_rect = self.ex_image.get_rect()
+        ex_button_rect.left, ex_button_rect.top = 350,500
+        self.screen.blit(self.ex_image,ex_button_rect)
+
+        pygame.display.update()
+        flag = True
+        while flag:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button==1 and start_button_rect.collidepoint(event.pos):
+                        flag = False
+                    if event.button==1 and intro_button_rect.collidepoint(event.pos):
+                        self.intro()
+                        return
+                    if event.button==1 and ex_button_rect.collidepoint(event.pos):
+                        pygame.quit()
+                        exit()
+    #游戏介绍
+    def intro(self):
+        self.screen.blit(self.bgImg_menu,(0,0))
+        text="How to play"
+        text1= "1. Use keyboard Arrow key:"
+        text2 = "UP, DOWN, LEFT AND RIGHT to move"
+        text3="2. Use space key to fire bullets"
+
+        intro_render=self.font.render(text,True,(255,255,255))
+        intro_render1=self.font.render(text1,True,(255,255,255))
+        intro_render2=self.font.render(text2,True,(255,255,255))
+        intro_render3=self.font.render(text3,True,(255,255,255))
+
+        self.screen.blit(intro_render,(320,10))
+        self.screen.blit(intro_render1,(10,100))
+        self.screen.blit(intro_render2,(90,200))
+        self.screen.blit(intro_render3,(10,300))
+
+        back_button_rect = self.back_image.get_rect()
+        back_button_rect.left, back_button_rect.top = 700,550
+        self.screen.blit(self.back_image,back_button_rect)
+        pygame.display.update()
+        is_intro = True
+        while is_intro:
+            for event in pygame.event.get():
+
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button==1 and back_button_rect.collidepoint(event.pos):
+                        self.menu()
+                    
     def handle_events(self):
 
         for event in pygame.event.get():
@@ -80,57 +192,120 @@ class Game:
                 pygame.quit()
                 exit()
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    self.player.horizontal = 5
-                    self.flag_RIGHT = 1
-                if event.key == pygame.K_LEFT:
-                    self.player.horizontal = -5
-                    self.flag_LEFT = 1
-                if event.key == pygame.K_UP:
-                    self.player.vertical = -5
-                    self.flag_UP = 1
-                if event.key == pygame.K_DOWN:
-                    self.player.vertical = 5
-                    self.flag_DOWN = 1
-                if event.key == pygame.K_SPACE:
-                    print("发射子弹...")
-                    self.bullets.append(Bullet(self.player.x, self.player.y))
-                if event.key == pygame.K_r and self.special_bullets > 0:  # 清屏炸弹
-                    self.score += self.number_of_enemies * 5
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button==1 and self.pause_rect.collidepoint(event.pos):
+                        self.pause = not self.pause
+                        if self.pause:
+                            self.pause_image = self.game_play_image
+
+                            self.temp_step = []
+                            #temp_y = []
+                            for e in self.enemies:
+                                self.temp_step.append(e.step)
+                                e.step = 0
+                                #e.move_down = 0
+
+                        else:
+                            self.pause_image = self.game_pause_image
+                            for e in self.enemies:
+                                e.step = self.temp_step[0]
+                                del self.temp_step[0]
+                                #e.move_down = 40
+                if event.button==1 and self.menu_quit_rect.collidepoint(event.pos):
+                    pygame.quit()
+                    exit()
+                if event.button==1 and self.menu_resume_rect.collidepoint(event.pos):
+                    self.pause = False
                     for e in self.enemies:
-                        e.reset()
-                    self.special_bullets -= 1
-
-            elif event.type == pygame.KEYUP:
-                if event.key != pygame.K_SPACE:
+                        e.step = self.temp_step[0]
+                        del self.temp_step[0]
+                if event.button==1 and self.back_home_rect.collidepoint(event.pos):
+                    #running = False
+                    self.enemies.clear()
+                    number_of_enemies = 2
+                    for i in range(number_of_enemies):
+                        Monster = Enemy()
+                        self.enemies.append(Monster) 
+                    self.player=Planeplayer()
+                    self.score = 0
+                    self.start_game()
+                    
+                
+                if event.button==1 and self.restart_rect.collidepoint(event.pos):
+                    self.enemies.clear()
+                    self.number_of_enemies = 2
+                    for i in range(self.number_of_enemies):
+                        Monster = Enemy()
+                        self.enemies.append(Monster)     
+                    self.player=Planeplayer()
+                    #for e in enemies:
+                    #    e.reset()
+                    #    e.step = 0.7
+                    self.score = 0
+                    self.is_over = False
+                    self.start_game()
+                
+                if event.button==1 and self.pause2_rect.collidepoint(event.pos):
+                    self.pause2 = not self.pause2
+                    if self.pause2:
+                        self.pause2_image = self.audio_on_image
+                        pygame.mixer.music.stop()
+                    else:
+                        self.pause2_image = self.audio_off_image
+                        pygame.mixer.music.play(-1)
+            if not self.pause:
+                if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RIGHT:
-                        self.flag_RIGHT = 0
-                        if self.flag_LEFT == 0:
-                            self.player.horizontal = 0
-                        else:
-                            self.player.horizontal = -5
+                        self.player.horizontal = 5
+                        self.flag_RIGHT = 1
                     if event.key == pygame.K_LEFT:
-                        self.flag_LEFT = 0
-                        if self.flag_RIGHT == 0:
-                            self.player.horizontal = 0
-                        else:
-                            self.player.horizontal = 5
-                    if event.key == pygame.K_DOWN:
-                        self.flag_DOWN = 0
-                        if self.flag_UP == 0:
-                            self.player.vertical = 0
-                        else:
-                            self.player.vertical = 5
+                        self.player.horizontal = -5
+                        self.flag_LEFT = 1
                     if event.key == pygame.K_UP:
-                        self.flag_UP = 0
-                        if self.flag_DOWN == 0:
-                            self.player.vertical = 0
-                        else:
-                            self.player.vertical = -5
+                        self.player.vertical = -5
+                        self.flag_UP = 1
+                    if event.key == pygame.K_DOWN:
+                        self.player.vertical = 5
+                        self.flag_DOWN = 1
+                    if event.key == pygame.K_SPACE:
+                        print("发射子弹...")
+                        self.bullets.append(Bullet(self.player.x, self.player.y))
+                    if event.key == pygame.K_r and self.special_bullets > 0:  # 清屏炸弹
+                        self.score += self.number_of_enemies * 5
+                        for e in self.enemies:
+                            e.reset()
+                        self.special_bullets -= 1
 
-            elif event.type == BOSS_BULLETS_EVENT and self.boss_flag:
-                self.boss_bullets.append(BossBullet(self.boss.x+self.boss.image.get_width()/2-25, self.boss.y+self.boss.image.get_height()-25))
+
+                elif event.type == pygame.KEYUP:
+                    if event.key != pygame.K_SPACE:
+                        if event.key == pygame.K_RIGHT:
+                            self.flag_RIGHT = 0
+                            if self.flag_LEFT == 0:
+                                self.player.horizontal = 0
+                            else:
+                                self.player.horizontal = -5
+                        if event.key == pygame.K_LEFT:
+                            self.flag_LEFT = 0
+                            if self.flag_RIGHT == 0:
+                                self.player.horizontal = 0
+                            else:
+                                self.player.horizontal = 5
+                        if event.key == pygame.K_DOWN:
+                            self.flag_DOWN = 0
+                            if self.flag_UP == 0:
+                                self.player.vertical = 0
+                            else:
+                                self.player.vertical = 5
+                        if event.key == pygame.K_UP:
+                            self.flag_UP = 0
+                            if self.flag_DOWN == 0:
+                                self.player.vertical = 0
+                            else:
+                                self.player.vertical = -5
+
+                elif event.type == BOSS_BULLETS_EVENT and self.boss_flag:
+                    self.boss_bullets.append(BossBullet(self.boss.x+self.boss.image.get_width()/2-25, self.boss.y+self.boss.image.get_height()-25))
 
     # 游戏难度
     def game_stage(self):
@@ -253,17 +428,30 @@ class Game:
         except:
             pass
 
+        #refresh menu button
+        self.screen.blit(self.pause_image, self.pause_rect)
+        self.screen.blit(self.pause2_image,self.pause2_rect)
+
         # refresh score
         self.show_score()
 
+        # pause menu
+        if self.pause:
+            self.screen.blit(self.menu_image, self.menu_rect)     
+            self.screen.blit(self.menu_resume_image, self.menu_resume_rect)
+            self.screen.blit(self.menu_quit_image, self.menu_quit_rect)
+            self.screen.blit(self.back_home_image,self.back_home_rect)
+
         # check
         self.check_is_over()
-
+        if self.is_over:
+            self.screen.blit(self.restart_image, self.restart_rect)
         # update screen
         pygame.display.update()
 
     def start_game(self):
-
+        self.pause = False
+        self.menu()
         while True:
             # self.clock.tick(self.FRAME)
             self.handle_events()
@@ -274,5 +462,4 @@ class Game:
 
 if __name__ == '__main__':
     game = Game()
-    # game.main_menu
     game.start_game()
