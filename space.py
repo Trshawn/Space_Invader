@@ -68,11 +68,12 @@ class Game:
         self.font = pygame.font.Font('freesansbold.ttf', 32)
         self.is_over = False
 
+        self.flag_RIGHT = 0
+        self.flag_DOWN = 0
+        self.flag_LEFT = 0
+        self.flag_UP = 0
+
     def handle_events(self):
-        flag_RIGHT = 0
-        flag_DOWN = 0
-        flag_LEFT = 0
-        flag_UP = 0
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -82,16 +83,16 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
                     self.player.horizontal = 5
-                    flag_RIGHT = 1
+                    self.flag_RIGHT = 1
                 if event.key == pygame.K_LEFT:
                     self.player.horizontal = -5
-                    flag_LEFT = 1
+                    self.flag_LEFT = 1
                 if event.key == pygame.K_UP:
                     self.player.vertical = -5
-                    flag_UP = 1
+                    self.flag_UP = 1
                 if event.key == pygame.K_DOWN:
                     self.player.vertical = 5
-                    flag_DOWN = 1
+                    self.flag_DOWN = 1
                 if event.key == pygame.K_SPACE:
                     print("发射子弹...")
                     self.bullets.append(Bullet(self.player.x, self.player.y))
@@ -104,26 +105,26 @@ class Game:
             elif event.type == pygame.KEYUP:
                 if event.key != pygame.K_SPACE:
                     if event.key == pygame.K_RIGHT:
-                        flag_RIGHT = 0
-                        if flag_LEFT == 0:
+                        self.flag_RIGHT = 0
+                        if self.flag_LEFT == 0:
                             self.player.horizontal = 0
                         else:
                             self.player.horizontal = -5
                     if event.key == pygame.K_LEFT:
-                        flag_LEFT = 0
-                        if flag_RIGHT == 0:
+                        self.flag_LEFT = 0
+                        if self.flag_RIGHT == 0:
                             self.player.horizontal = 0
                         else:
                             self.player.horizontal = 5
                     if event.key == pygame.K_DOWN:
-                        flag_DOWN = 0
-                        if flag_UP == 0:
+                        self.flag_DOWN = 0
+                        if self.flag_UP == 0:
                             self.player.vertical = 0
                         else:
                             self.player.vertical = 5
                     if event.key == pygame.K_UP:
-                        flag_UP = 0
-                        if flag_DOWN == 0:
+                        self.flag_UP = 0
+                        if self.flag_DOWN == 0:
                             self.player.vertical = 0
                         else:
                             self.player.vertical = -5
