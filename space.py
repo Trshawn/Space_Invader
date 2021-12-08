@@ -9,7 +9,7 @@ from Bullet.bullets import *
 from Enemy.boss import *
 from Bullet.boss_bullets import *
 from pygame.constants import MOUSEBUTTONDOWN, MOUSEMOTION
-
+from Menu.my_menu import *
 
 class Game:
 
@@ -123,7 +123,7 @@ class Game:
         self.pause2_image = self.audio_off_image
 
     def menu(self):
-    
+        
         self.screen.blit(self.bgImg_menu,(0,0))
         start_button_rect = self.start_image.get_rect()
         start_button_rect.left, start_button_rect.top = 350,300
@@ -174,6 +174,7 @@ class Game:
                                 e.step = self.temp_step[0]
                                 del self.temp_step[0]
                                 #e.move_down = 40
+
                 if event.button==1 and self.menu_quit_rect.collidepoint(event.pos):
                     pygame.quit()
                     exit()
@@ -352,7 +353,8 @@ class Game:
                     e.x -= e.step
             # 检测敌人与玩家距离
             if self.distance(e.x, e.y, self.player.x, self.player.y) < 25:
-                self.explosion.play()
+                if self.pause2 == False:
+                    self.explosion.play()
                 self.is_over = True
                 self.enemies.clear()
             # 如果敌人飞出游戏界面，重置敌人
