@@ -168,6 +168,10 @@ class Game:
                                 self.temp_speed.append(e.speed)
                                 e.speed = 0
                                 #e.move_down = 0
+                            self.temp_ver = self.boss.vertical
+                            self.tmep_hor = self.boss.horizontal
+                            self.boss.vertical = 0
+                            self.boss.horizontal = 0
 
                         else:
                             self.pause_image = self.game_pause_image
@@ -175,6 +179,8 @@ class Game:
                                 e.speed = self.temp_speed[0]
                                 del self.temp_speed[0]
                                 #e.move_down = 40
+                            self.boss.vertical = self.temp_ver
+                            self.boss.horizontal = self.tmep_hor
 
                 if event.button==1 and self.menu_quit_rect.collidepoint(event.pos):
                     pygame.quit()
@@ -185,9 +191,13 @@ class Game:
                     for e in self.enemies:
                         e.speed = self.temp_speed[0]
                         del self.temp_speed[0]
+                    self.boss.vertical = self.temp_ver
+                    self.boss.horizontal = self.tmep_hor
+
                 if event.button==1 and self.back_home_rect.collidepoint(event.pos):
                     #running = False
                     self.enemies.clear()
+                    del self.boss
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
                         Monster = Enemy()
@@ -200,6 +210,7 @@ class Game:
                 
                 if event.button==1 and self.restart_rect.collidepoint(event.pos):
                     self.enemies.clear()
+                    del self.boss
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
                         Monster = Enemy()
@@ -281,14 +292,17 @@ class Game:
                                 self.player.vertical = 0
                             else:
                                 self.player.vertical = -5
-
-                elif event.type == BOSS_BULLETS_EVENT and self.boss_flag and self.boss.y > -50 and self.boss.health > 0:
-                    self.boss_bullets.append(BossBullet(self.boss.x+self.boss.image.get_width()/2-25,
-                                                        self.boss.y+self.boss.image.get_height()-25, 0))
-                    self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                        self.boss.y + self.boss.image.get_height() - 25, 1))
-                    self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                        self.boss.y + self.boss.image.get_height() - 25, -1))
+                try:
+                    if event.type == BOSS_BULLETS_EVENT and self.boss_flag and self.boss.y > -50 and self.boss.health > 0:
+                    
+                        self.boss_bullets.append(BossBullet(self.boss.x+self.boss.image.get_width()/2-25,
+                                                            self.boss.y+self.boss.image.get_height()-25, 0))
+                        self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
+                                                            self.boss.y + self.boss.image.get_height() - 25, 1))
+                        self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
+                                                            self.boss.y + self.boss.image.get_height() - 25, -1))
+                except:
+                    pass
 
     # Game difficulty
     def game_stage(self):
