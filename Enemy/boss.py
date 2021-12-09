@@ -6,9 +6,10 @@ WIDTH = pygame.image.load("./Background/bg.png").get_width()
 
 
 class Boss():
-    def __init__(self,speed=1, img="./Enemy/boss.png"):
+    def __init__(self, stage=0, speed=1, img="./Enemy/boss.png"):
+        self.stage = stage
         self.image = pygame.image.load(img)
-        self.x = (WIDTH-self.image.get_width())/2
+        self.x = (WIDTH - self.image.get_width()) / 2
         self.y = -self.image.get_height()
         self.vertical = speed
         direction = [1, -1]
@@ -26,5 +27,3 @@ class Boss():
 
         if self.health == 0:
             self.image = pygame.image.load("./Enemy/null.png")
-
-        
