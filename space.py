@@ -188,8 +188,8 @@ class Game:
                 if event.button==1 and self.back_home_rect.collidepoint(event.pos):
                     #running = False
                     self.enemies.clear()
-                    number_of_enemies = 2
-                    for i in range(number_of_enemies):
+                    self.number_of_enemies = 2
+                    for i in range(self.number_of_enemies):
                         Monster = Enemy()
                         self.enemies.append(Monster) 
                     self.player=Planeplayer()
