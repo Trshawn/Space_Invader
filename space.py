@@ -17,6 +17,8 @@ class Game:
         # Initialisation interface
         pygame.init()
 
+
+        self.number=0
         # Screen
         self.SCREEN_WIDTH = pygame.image.load("./Background/bg.png").get_width()
         self.SCREEN_HEIGHT = pygame.image.load("./Background/bg.png").get_height()
@@ -309,13 +311,17 @@ class Game:
                                 self.player.vertical = -5
                 try:
                     if event.type == BOSS_BULLETS_EVENT and self.boss_flag and self.boss.y > -50 and self.boss.health > 0:
-                    
-                        self.boss_bullets.append(BossBullet(self.boss.x+self.boss.image.get_width()/2-25,
-                                                            self.boss.y+self.boss.image.get_height()-25, 0))
-                        self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                            self.boss.y + self.boss.image.get_height() - 25, 1))
-                        self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                            self.boss.y + self.boss.image.get_height() - 25, -1))
+                        if self.number%10 in [0,1,2,3,4]:
+                            self.boss_bullets.append(BossBullet(self.boss.x+self.boss.image.get_width()/2-25,
+                                                                self.boss.y+self.boss.image.get_height()-25, 0))
+                            self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
+                                                                self.boss.y + self.boss.image.get_height() - 25, 1))
+                            self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
+                                                                self.boss.y + self.boss.image.get_height() - 25, -1))
+                        else:
+                            self.boss_bullets.append(BossBullet(self.boss.x+self.boss.image.get_width()/2-25,
+                                                                self.boss.y+self.boss.image.get_height()-25, 0))
+                        self.number+=1
                 except:
                     pass
 
