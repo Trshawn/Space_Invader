@@ -430,6 +430,7 @@ class Game:
                 self.boss_bullets.remove(b)
             if self.distance(b.x, b.y, self.player.x, self.player.y) < 50:
                 self.player.hp -= 1
+                self.explosion.play()
                 self.boss_bullets.remove(b)
                 # self.is_over = True
                 if self.player.hp <= 0:
@@ -535,6 +536,7 @@ class Game:
 
     def start_game(self):
         self.pause = False
+        self.pause2 = False
         self.menu()
         while True:
             # self.clock.tick(self.FRAME)
