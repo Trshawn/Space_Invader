@@ -181,6 +181,7 @@ class Game:
                     exit()
                 if event.button==1 and self.menu_resume_rect.collidepoint(event.pos):
                     self.pause = False
+                    self.pause_image = self.game_pause_image
                     for e in self.enemies:
                         e.speed = self.temp_speed[0]
                         del self.temp_speed[0]
