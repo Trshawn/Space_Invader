@@ -69,6 +69,9 @@ class Game:
         self.font = pygame.font.Font('freesansbold.ttf', 32)
         # self.is_over = False
         self.success = False
+        self.stage1 = True
+        self.stage2 = False
+        self.stage3 = False
 
         self.flag_RIGHT = 0
         self.flag_DOWN = 0
@@ -318,21 +321,21 @@ class Game:
 
     # Game difficulty
     def game_stage(self):
-        if self.score == 20 and len(self.enemies) == 2:
-            self.enemies.clear()
+        if self.score == 20 and len(self.enemies) >= 2 and self.stage1:
+            self.stage1, self.stage2 = False, True
             for i in range(self.number_of_enemies):
                 self.Monster = Enemy()
                 self.number_of_enemies = 4
                 self.enemies.append(self.Monster)
             return
-        if self.score == 40 and len(self.enemies) == 4:
-            self.enemies.clear()
+        if self.score == 40 and len(self.enemies) >= 4 and self.stage2:
+            self.stage2, self.stage3 = False, True
             for i in range(self.number_of_enemies):
                 self.Monster = Enemy()
                 self.number_of_enemies = 6
                 self.enemies.append(self.Monster)
             return
-        if self.score == 45 and len(self.enemies) == 6:
+        if self.score == 45 and len(self.enemies) >= 6 and self.stage3:
             # Init boss
             self.boss = Boss()
             self.boss_flag = True
