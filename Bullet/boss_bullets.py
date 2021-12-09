@@ -19,11 +19,11 @@ class BossBullet(pygame.sprite.Sprite):
         if self.flag == 0:
             self.y += self.speed
         if self.flag == 1:
-            self.x += self.speed * math.sin(150)
-            self.y += self.speed * math.cos(150)
+            self.x += self.speed * math.sin(math.radians(40))
+            self.y += self.speed * math.cos(math.radians(40))
         if self.flag == -1:
-            self.x += self.speed * math.sin(-150)
-            self.y += self.speed * math.cos(-150)
+            self.x += self.speed * math.sin(math.radians(-40))
+            self.y += self.speed * math.cos(math.radians(-40))
 
 
 

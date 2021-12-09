@@ -49,7 +49,7 @@ class Game:
 
         # Init bullets
         self.bullets = []
-        self.special_bullets = 3  # 清屏子弹 数量上限
+        self.special_bullets = 3  # Max number of Ultimate shot
 
         # Init enemies
         self.number_of_enemies = 2
@@ -61,13 +61,13 @@ class Game:
 
         self.boss_flag=False
         self.boss_bullets = []
-        pygame.time.set_timer(BOSS_BULLETS_EVENT, 200)
+        pygame.time.set_timer(BOSS_BULLETS_EVENT, 500) # Boss bullet shot interval
 
         # Others
         self.score = 0
         self.over_font = pygame.font.Font('freesansbold.ttf', 64)
         self.font = pygame.font.Font('freesansbold.ttf', 32)
-        self.is_over = False
+        # self.is_over = False
         self.success = False
 
         self.flag_RIGHT = 0
@@ -104,7 +104,7 @@ class Game:
         self.restart_rect = self.restart_image.get_rect()
         self.restart_rect.left,self.restart_rect.top = 400,200
 
-        #game pause
+        # game pause
         self.pause = False
         self.game_play_image = pygame.image.load("./Menu/game_play.png").convert_alpha()
         self.game_pause_image = pygame.image.load("./Menu/game_pause.png").convert_alpha()
@@ -122,13 +122,13 @@ class Game:
         self.pause2_rect.left, self.pause2_rect.top = 700,550
         self.pause2_image = self.audio_off_image
 
+    # Menu display
     def menu(self):
         
         self.screen.blit(self.bgImg_menu,(0,0))
         start_button_rect = self.start_image.get_rect()
         start_button_rect.left, start_button_rect.top = 350,300
         self.screen.blit(self.start_image,start_button_rect)
-
 
         ex_button_rect = self.ex_image.get_rect()
         ex_button_rect.left, ex_button_rect.top = 350,500
@@ -147,7 +147,8 @@ class Game:
                     if event.button==1 and ex_button_rect.collidepoint(event.pos):
                         pygame.quit()
                         exit()
-                    
+
+    # Event                    
     def handle_events(self):
 
         for event in pygame.event.get():
@@ -208,7 +209,8 @@ class Game:
                     #    e.speed = 0.7
                     self.score = 0
                     self.special_bullets = 3
-                    self.is_over = False
+                    self.player.hp = 10
+                    # self.is_over = False
                     self.start_game()
                 
                 if event.button==1 and self.pause2_rect.collidepoint(event.pos):
@@ -221,7 +223,7 @@ class Game:
                         self.pause2_image = self.audio_off_image
                         pygame.mixer.music.play(-1)
                         self.explosion = pygame.mixer.Sound('./Sound Effect/exp.wav')
-
+            # Button click
             if not self.pause:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RIGHT:
@@ -236,7 +238,7 @@ class Game:
                     if event.key == pygame.K_DOWN:
                         self.player.vertical = 5
                         self.flag_DOWN = 1
-                    if event.key == pygame.K_SPACE and not self.is_over and not self.success:
+                    if event.key == pygame.K_SPACE and self.player.hp != 0 and not self.success:
                         print("发射子弹...")
                         self.bullets.append(Bullet(self.player.x, self.player.y))
                     if event.key == pygame.K_r and self.special_bullets > 0:  # 清屏炸弹
@@ -245,7 +247,7 @@ class Game:
                             e.reset()
                         self.special_bullets -= 1
 
-
+                # Avoid keyboard conflict
                 elif event.type == pygame.KEYUP:
                     if event.key != pygame.K_SPACE:
                         if event.key == pygame.K_RIGHT:
@@ -281,7 +283,7 @@ class Game:
                     self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
                                                         self.boss.y + self.boss.image.get_height() - 25, -1))
 
-    # 游戏难度
+    # Game difficulty
     def game_stage(self):
         if self.score == 20 and len(self.enemies) == 2:
             self.enemies.clear()
@@ -302,6 +304,7 @@ class Game:
             self.boss = Boss()
             self.boss_flag = True
 
+    # Bullet display
     def show_bullets(self):
         for b in self.bullets:
             self.screen.blit(b.bulletImg, (b.x, b.y))
@@ -317,7 +320,7 @@ class Game:
             if b.y < 0:
                 self.bullets.remove(b)
 
-    # 子弹命中
+    # Bullet hit
     def hit(self, bullet):
         for e in self.enemies:
             if self.distance(bullet.x, bullet.y, e.x, e.y) < 30:
@@ -328,16 +331,16 @@ class Game:
                 e.reset()
                 break
 
-    # 敌人显示
+    # Enemy display
     def show_enemy(self):
         self.type_move = random.randint(1, 3)
         for e in self.enemies:
             self.screen.blit(e.enemyImg, (e.x, e.y))
-            # 敌人随机路线
-            ## 直线移动
+            # Random action
+            ## Vertical move
             if self.type_move == 1:
                 e.y += e.speed
-            ## 斜线移动
+            ## Different angle
             if e.x <= 400:
                 if self.type_move == 2:
                     e.x += e.speed * random.uniform(0.5, 1)
@@ -346,22 +349,29 @@ class Game:
                 if self.type_move == 2:
                     e.x -= e.speed * random.uniform(0.5, 1)
                     e.y += e.speed * random.uniform(0.8, 1)
-            ## 左右移动，直到被击毁
+            ## Horizontal move
             if self.type_move == 3:
                 if e.x < 50:
                     e.x += e.speed
                 elif e.x > 750:
                     e.x -= e.speed
-            # 检测敌人与玩家距离
+            # Detect distance between enemy and player
             if self.distance(e.x, e.y, self.player.x, self.player.y) < 25:
                 if self.pause2 == False:
                     self.explosion.play()
-                self.is_over = True
-                self.enemies.clear()
-            # 如果敌人飞出游戏界面，重置敌人
+                self.player.hp -= 1
+                # Hit by enemies and reset this enemy
+                self.enemies.remove(e)
+                self.enemies.append(e)
+                e.reset()           
+                # self.is_over = True
+                if self.player.hp <= 0:
+                    self.enemies.clear()
+            # Outside the screen = reset
             if e.y > 600:
                 e.reset()
 
+    # Boss display
     def show_boss(self):
         if self.boss.health == 0:
             self.success = True
@@ -369,6 +379,7 @@ class Game:
         self.screen.blit(self.boss.image, (self.boss.x, self.boss.y))
         self.boss.update()
 
+    # Boss bullet display
     def show_boss_bullets(self):
         for b in self.boss_bullets:
             self.screen.blit(b.img, (b.x, b.y))
@@ -376,24 +387,55 @@ class Game:
             if b.y > self.SCREEN_HEIGHT:
                 self.boss_bullets.remove(b)
             if self.distance(b.x, b.y, self.player.x, self.player.y) < 50:
-                self.explosion.play()
-                self.is_over = True
-                self.enemies.clear()
+                self.player.hp -= 1
+                self.boss_bullets.remove(b)
+                # self.is_over = True
+                if self.player.hp <= 0:
+                    self.explosion.play()
+                    self.enemies.clear()
 
+    # Distance formula
     def distance(self, bx, by, ex, ey):
         a = bx - ex
         b = by - ey
         return math.sqrt(a ** 2 + b ** 2)
 
-    # 显示分数
+    # Display score
     def show_score(self):
-        text = f"Score:{self.score}, BB:{self.special_bullets}"
+        text = f"Score:{self.score}, BB:{self.special_bullets}, HP:{self.player.hp}"
         score_render = self.font.render(text, True, (255, 255, 255))
         self.screen.blit(score_render, (10, 10))
 
-    # 检测游戏是否结束
+    # Player and Boss HP display
+    def show_health(self, hp):
+        # Player
+        hp = self.player.hp
+        red_x, red_y = 550, 20
+        red_width, red_height = 130, 10
+        green_x, green_y = 550, 20
+        green_width, green_height = 130 - 13 * (10 - hp), 10
+        # Draw Max HP bar and Current HP bar
+        pygame.draw.rect(self.screen, (255, 0, 0), (red_x, red_y, red_width, red_height))        
+        pygame.draw.rect(self.screen, (0, 255, 0), (green_x, green_y, green_width, green_height))
+        # Boss
+        try:
+            bossHP = self.boss.health
+            red_x, red_y = 350, 20
+            red_width, red_height = 130, 10
+            green_x, green_y = 350, 20
+            green_width, green_height = 130 - 13 * (10 - bossHP), 10
+            # Draw Max HP bar and Current HP bar
+            pygame.draw.rect(self.screen, (255, 0, 0), (red_x, red_y, red_width, red_height))        
+            pygame.draw.rect(self.screen, (0, 255, 0), (green_x, green_y, green_width, green_height))
+        except:
+            pass
+
+        pygame.display.update()
+
+    # Game complete
     def check(self):
-        if self.is_over:
+        if self.player.hp <= 0:
+            self.player.hp = 0
             text = "Game Over"
             render = self.over_font.render(text, True, (255, 255, 0))
             self.screen.blit(render, (200, 250))
@@ -402,6 +444,7 @@ class Game:
             render = self.over_font.render(text, True, (255, 255, 0))
             self.screen.blit(render, (self.SCREEN_WIDTH/2 - 100, self.SCREEN_HEIGHT/2 - 50))
 
+    # Game refresh
     def refresh(self):
 
         # refresh background
@@ -438,7 +481,8 @@ class Game:
 
         # check
         self.check()
-        if self.is_over:
+        if self.player.hp <= 0:
+            self.player.hp = 0
             self.screen.blit(self.restart_image, self.restart_rect)
 
         # update screen
@@ -451,6 +495,7 @@ class Game:
             # self.clock.tick(self.FRAME)
             self.handle_events()
             self.game_stage()
+            self.show_health(self.player.hp)
             self.player.move_player()
             self.refresh()
 

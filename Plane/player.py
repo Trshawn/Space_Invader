@@ -12,6 +12,7 @@ class Planeplayer():
         self.y = HEIGHT - self.img.get_height() - 50
         self.horizontal = 0
         self.vertical = 0
+        self.hp = 10
 
     def move_player(self):
         self.x += self.horizontal
