@@ -427,7 +427,11 @@ class Game:
                 self.boss_bullets.remove(b)
             if self.distance(b.x, b.y, self.player.x, self.player.y) < 50:
                 self.player.hp -= 1
-                self.explosion.play()
+                if self.pause2 == True:
+                    self.explosion.stop()
+                else:
+                    self.explosion.play()
+                    
                 self.boss_bullets.remove(b)
                 # self.is_over = True
                 if self.player.hp <= 0:
