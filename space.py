@@ -182,7 +182,7 @@ class Game:
                 if event.button==1 and self.menu_resume_rect.collidepoint(event.pos):
                     self.pause = False
                     for e in self.enemies:
-                        e.speed = self.speed[0]
+                        e.speed = self.temp_speed[0]
                         del self.temp_speed[0]
                 if event.button==1 and self.back_home_rect.collidepoint(event.pos):
                     #running = False
