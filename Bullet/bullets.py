@@ -6,6 +6,6 @@ class Bullet():
         self.bulletImg = pygame.image.load('./Bullet/bullet.png')
         self.x = x + 16
         self.y = y + 10
-        self.step = 5
+        self.speed = 5
 
 

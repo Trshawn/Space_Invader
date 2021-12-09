@@ -161,18 +161,18 @@ class Game:
                         if self.pause:
                             self.pause_image = self.game_play_image
 
-                            self.temp_step = []
+                            self.temp_speed = []
                             #temp_y = []
                             for e in self.enemies:
-                                self.temp_step.append(e.step)
-                                e.step = 0
+                                self.temp_speed.append(e.speed)
+                                e.speed = 0
                                 #e.move_down = 0
 
                         else:
                             self.pause_image = self.game_pause_image
                             for e in self.enemies:
-                                e.step = self.temp_step[0]
-                                del self.temp_step[0]
+                                e.speed = self.temp_speed[0]
+                                del self.temp_speed[0]
                                 #e.move_down = 40
 
                 if event.button==1 and self.menu_quit_rect.collidepoint(event.pos):
@@ -181,8 +181,8 @@ class Game:
                 if event.button==1 and self.menu_resume_rect.collidepoint(event.pos):
                     self.pause = False
                     for e in self.enemies:
-                        e.step = self.temp_step[0]
-                        del self.temp_step[0]
+                        e.speed = self.speed[0]
+                        del self.temp_speed[0]
                 if event.button==1 and self.back_home_rect.collidepoint(event.pos):
                     #running = False
                     self.enemies.clear()
@@ -205,7 +205,7 @@ class Game:
                     self.player=Planeplayer()
                     #for e in enemies:
                     #    e.reset()
-                    #    e.step = 0.7
+                    #    e.speed = 0.7
                     self.score = 0
                     self.special_bullets = 3
                     self.is_over = False
@@ -306,13 +306,14 @@ class Game:
         for b in self.bullets:
             self.screen.blit(b.bulletImg, (b.x, b.y))
             self.hit(b)
-            b.y -= b.step
+            b.y -= b.speed
             try:
-                if self.distance(b.x, b.y, self.boss.x, self.boss.y) < 50:
+                if self.distance(b.x, b.y, self.boss.x + 98, self.boss.y + 67) < 50:
                     self.boss.health -= 1
                     self.bullets.remove(b)
                     print(f"health -= 1\nhealth:{self.boss.health}")
-            except: pass
+            except: 
+                pass
             if b.y < 0:
                 self.bullets.remove(b)
 
@@ -335,22 +336,22 @@ class Game:
             # 敌人随机路线
             ## 直线移动
             if self.type_move == 1:
-                e.y += e.step
+                e.y += e.speed
             ## 斜线移动
             if e.x <= 400:
                 if self.type_move == 2:
-                    e.x += e.step * random.uniform(0.5, 1)
-                    e.y += e.step * random.uniform(0.8, 1)
+                    e.x += e.speed * random.uniform(0.5, 1)
+                    e.y += e.speed * random.uniform(0.8, 1)
             elif e.x > 400:
                 if self.type_move == 2:
-                    e.x -= e.step * random.uniform(0.5, 1)
-                    e.y += e.step * random.uniform(0.8, 1)
+                    e.x -= e.speed * random.uniform(0.5, 1)
+                    e.y += e.speed * random.uniform(0.8, 1)
             ## 左右移动，直到被击毁
             if self.type_move == 3:
                 if e.x < 50:
-                    e.x += e.step
+                    e.x += e.speed
                 elif e.x > 750:
-                    e.x -= e.step
+                    e.x -= e.speed
             # 检测敌人与玩家距离
             if self.distance(e.x, e.y, self.player.x, self.player.y) < 25:
                 if self.pause2 == False:
