@@ -61,7 +61,7 @@ class Game:
 
         self.boss_flag=False
         self.boss_bullets = []
-        pygame.time.set_timer(BOSS_BULLETS_EVENT, 500) # Boss bullet shot interval
+        pygame.time.set_timer(BOSS_BULLETS_EVENT, 1000) # Boss bullet shot interval
 
         # Others
         self.score = 0
@@ -430,7 +430,7 @@ class Game:
             red_x, red_y = 350, 20
             red_width, red_height = 130, 10
             green_x, green_y = 350, 20
-            green_width, green_height = 130 - 13 * (10 - bossHP), 10
+            green_width, green_height = 130 * (self.boss.health / 50), 10
             # Draw Max HP bar and Current HP bar
             pygame.draw.rect(self.screen, (255, 0, 0), (red_x, red_y, red_width, red_height))        
             pygame.draw.rect(self.screen, (0, 255, 0), (green_x, green_y, green_width, green_height))
