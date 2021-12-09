@@ -168,10 +168,14 @@ class Game:
                                 self.temp_speed.append(e.speed)
                                 e.speed = 0
                                 #e.move_down = 0
-                            self.temp_ver = self.boss.vertical
-                            self.tmep_hor = self.boss.horizontal
-                            self.boss.vertical = 0
-                            self.boss.horizontal = 0
+                            try:
+                                self.temp_ver = self.boss.vertical
+                                self.tmep_hor = self.boss.horizontal
+                                self.boss.vertical = 0
+                                self.boss.horizontal = 0
+                            except:
+                                pass
+                            
 
                         else:
                             self.pause_image = self.game_pause_image
@@ -179,8 +183,11 @@ class Game:
                                 e.speed = self.temp_speed[0]
                                 del self.temp_speed[0]
                                 #e.move_down = 40
-                            self.boss.vertical = self.temp_ver
-                            self.boss.horizontal = self.tmep_hor
+                            try:
+                                self.boss.vertical = self.temp_ver
+                                self.boss.horizontal = self.tmep_hor
+                            except:
+                                pass
 
                 if event.button==1 and self.menu_quit_rect.collidepoint(event.pos):
                     pygame.quit()
@@ -191,8 +198,11 @@ class Game:
                     for e in self.enemies:
                         e.speed = self.temp_speed[0]
                         del self.temp_speed[0]
-                    self.boss.vertical = self.temp_ver
-                    self.boss.horizontal = self.tmep_hor
+                    try:
+                        self.boss.vertical = self.temp_ver
+                        self.boss.horizontal = self.tmep_hor
+                    except:
+                        pass
 
                 if event.button==1 and self.back_home_rect.collidepoint(event.pos):
                     #running = False
@@ -414,7 +424,10 @@ class Game:
                 self.boss_bullets.remove(b)
                 # self.is_over = True
                 if self.player.hp <= 0:
-                    self.explosion.play()
+                    if self.pause2 == True:
+                        self.explosion.stop()
+                    else:
+                        self.explosion.play()
                     self.enemies.clear()
 
     # Distance formula
