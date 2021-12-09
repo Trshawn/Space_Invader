@@ -241,7 +241,13 @@ class Game:
                         self.flag_DOWN = 1
                     if event.key == pygame.K_SPACE and self.player.hp != 0 and not self.success:
                         print("发射子弹...")
-                        self.bullets.append(Bullet(self.player.x, self.player.y))
+                        if self.score >= 70:  # double bullets
+                            self.bullets.append(Bullet(self.player.x - self.player.img.get_width()/3, self.player.y))
+                            self.bullets.append(Bullet(self.player.x + self.player.img.get_width()/3, self.player.y))
+                            if self.score >= 100:  # triple bullets
+                                self.bullets.append(Bullet(self.player.x, self.player.y)) 
+                        else:
+                            self.bullets.append(Bullet(self.player.x, self.player.y))
                     if event.key == pygame.K_r and self.special_bullets > 0:  # 清屏炸弹
                         self.score += self.number_of_enemies * 5
                         for e in self.enemies:

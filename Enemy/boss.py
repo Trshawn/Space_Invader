@@ -13,7 +13,7 @@ class Boss():
         self.vertical = speed
         direction = [1, -1]
         self.horizontal = speed * direction[random.randint(0, 1)]
-        self.health = 10
+        self.health = 50
 
     def update(self):
         self.y += self.vertical
