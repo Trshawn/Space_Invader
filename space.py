@@ -532,6 +532,7 @@ class Game:
 
     def start_game(self):
         self.pause = False
+        self.pause2 = False
         self.menu()
         while True:
             # self.clock.tick(self.FRAME)
