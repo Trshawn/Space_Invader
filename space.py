@@ -198,6 +198,7 @@ class Game:
                     #running = False
                     self.enemies.clear()
                     del self.boss
+                    self.boss_bullets.clear()
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
                         Monster = Enemy()
@@ -211,6 +212,7 @@ class Game:
                 if event.button==1 and self.restart_rect.collidepoint(event.pos):
                     self.enemies.clear()
                     del self.boss
+                    self.boss_bullets.clear()
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
                         Monster = Enemy()
