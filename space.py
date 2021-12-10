@@ -491,7 +491,7 @@ class Game:
             level_render = self.font.render(text,True,(255,105,180))
             self.screen.blit(level_render,(300,300))
 
-        pygame.display.update()
+        #pygame.display.update()
         
     # Display score
     def show_score(self):
