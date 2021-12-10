@@ -382,6 +382,8 @@ class Game:
             # Init boss
             pygame.mixer.music.load('./Background/boss.mp3')
             pygame.mixer.music.play(-1)
+            if self.pause2 == True:
+                pygame.mixer.music.stop()
             self.boss = Boss()
             self.boss_flag = True
 
