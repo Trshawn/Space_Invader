@@ -6,7 +6,7 @@ HEIGHT = pygame.image.load("./Background/bg.png").get_height()
 
 class Planeplayer():
 
-    def __init__(self, img="./Plane/player.png"):
+    def __init__(self, img="./Plane/player2.png"):
         self.img = pygame.image.load(img)
         self.x = (WIDTH - self.img.get_width()) /2
         self.y = HEIGHT - self.img.get_height() - 50

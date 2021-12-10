@@ -298,7 +298,7 @@ class Game:
                         print("发射子弹...")
                         if self.score >= 70:  # double bullets
                             self.bullets.append(Bullet(self.player.x - self.player.img.get_width() / 3, self.player.y))
-                            self.bullets.append(Bullet(self.player.x + self.player.img.get_width() / 3, self.player.y))
+                            self.bullets.append(Bullet(self.player.x + self. player.img.get_width() / 3, self.player.y))
                             if self.score >= 100:  # triple bullets
                                 self.bullets.append(Bullet(self.player.x, self.player.y))
                         else:
