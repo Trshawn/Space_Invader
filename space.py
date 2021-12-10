@@ -473,6 +473,26 @@ class Game:
         b = by - ey
         return math.sqrt(a ** 2 + b ** 2)
 
+    # Display level up
+    def level_up(self):
+
+        if self.score == 20:
+            text = "Level up!"
+            level_render = self.over_font.render(text,True,(255,105,180))
+            self.screen.blit(level_render,(300,300))
+        
+        elif self.score == 45:
+            text = "The boss is coming!!!"
+            level_render = self.over_font.render(text,True,(255,105,180))
+            self.screen.blit(level_render,(200,300))
+        
+        else:
+            text = " "
+            level_render = self.font.render(text,True,(255,105,180))
+            self.screen.blit(level_render,(300,300))
+
+        pygame.display.update()
+        
     # Display score
     def show_score(self):
         text = f"Score:{self.score}, BB:{self.special_bullets}, HP:{self.player.hp}"
@@ -529,7 +549,7 @@ class Game:
         # refresh player
         self.screen.blit(self.player.img, (self.player.x, self.player.y))
 
-        # refresh objects
+        # refresh objects 
         self.show_bullets()
         self.show_enemy()
         try:
@@ -542,6 +562,9 @@ class Game:
         self.screen.blit(self.pause_image, self.pause_rect)
         self.screen.blit(self.pause2_image, self.pause2_rect)
 
+        # refresh level
+        self.level_up()
+        
         # refresh score
         self.show_score()
 
