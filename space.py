@@ -57,6 +57,7 @@ class Game:
         self.number = 0
 
         # menu
+        self.menu_text = pygame.image.load("./Background/menu_text2.png")
         self.bgImg_menu = pygame.image.load('./Background/bg_menu.png')
 
         self.start_image = pygame.image.load("./Menu/game_play.png").convert_alpha()
@@ -132,6 +133,7 @@ class Game:
         pygame.mixer.music.load('./Background/bg.mp3')
         pygame.mixer.music.play(-1)
         self.screen.blit(self.bgImg_menu, (0, 0))
+        self.screen.blit(self.menu_text,(151, 60))
         start_button_rect = self.start_image.get_rect()
         start_button_rect.left, start_button_rect.top = 350, 300
         self.screen.blit(self.start_image, start_button_rect)
