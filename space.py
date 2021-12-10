@@ -33,7 +33,7 @@ class Game:
         self.FRAME = 120
 
         # Play bgm
-        pygame.mixer.music.load('./Background/bg.wav')
+        pygame.mixer.music.load('./Background/bg.mp3')
         pygame.mixer.music.play(-1)
 
         # Explosion sound effect
@@ -131,7 +131,8 @@ class Game:
 
     # Menu display
     def menu(self):
-
+        pygame.mixer.music.load('./Background/bg.mp3')
+        pygame.mixer.music.play(-1)
         self.screen.blit(self.bgImg_menu, (0, 0))
         start_button_rect = self.start_image.get_rect()
         start_button_rect.left, start_button_rect.top = 350, 300
@@ -226,6 +227,9 @@ class Game:
                     self.player = Planeplayer()
                     self.score = 0
                     self.special_bullets = 3
+                    self.stage1 = True
+                    self.stage2 = False
+                    self.stage3 = False
                     self.start_game(1)
 
                 if event.button == 1 and self.restart_rect.collidepoint(event.pos):
@@ -247,6 +251,9 @@ class Game:
                     self.special_bullets = 3
                     self.player.hp = 10
                     # self.is_over = False
+                    self.stage1 = True
+                    self.stage2 = False
+                    self.stage3 = False
                     self.start_game(1)
 
                 if event.button == 1 and self.pause2_rect.collidepoint(event.pos):
@@ -356,6 +363,8 @@ class Game:
             return
         if self.score == 45 and len(self.enemies) >= 6 and self.stage3:
             # Init boss
+            pygame.mixer.music.load('./Background/boss.mp3')
+            pygame.mixer.music.play(-1)
             self.boss = Boss()
             self.boss_flag = True
 
