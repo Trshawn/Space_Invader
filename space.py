@@ -255,7 +255,7 @@ class Game:
                     self.stage1 = True
                     self.stage2 = False
                     self.stage3 = False
-                    self.start_game(1)
+                    self.start_game()
 
                 if event.button == 1 and self.restart_rect.collidepoint(event.pos):
                     self.enemies.clear()
@@ -279,7 +279,7 @@ class Game:
                     self.stage1 = True
                     self.stage2 = False
                     self.stage3 = False
-                    self.start_game(1)
+                    self.start_game()
 
                 if event.button == 1 and self.pause2_rect.collidepoint(event.pos):
                     self.pause2 = not self.pause2
