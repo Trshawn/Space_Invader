@@ -64,7 +64,7 @@ class Game:
 
         self.menu_image = pygame.image.load("./Menu/menu.png").convert_alpha()
         self.menu_rect = self.menu_image.get_rect()
-        self.menu_rect.left, self.menu_rect.top = 300, 180
+        self.menu_rect.left, self.menu_rect.top = 340, 180
 
         self.menu_resume_image = pygame.image.load("./Menu/menu_resume.png").convert_alpha()
         self.menu_resume_rect = self.menu_resume_image.get_rect()
