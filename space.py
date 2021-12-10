@@ -174,6 +174,9 @@ class Game:
                             self.temp_bullet_speed.append(b.speed)
                             b.speed = 0
                         self.temp_bossbullet_speed = []
+                        for bb in self.boss_bullets:
+                            self.temp_bossbullet_speed.append(bb.speed)
+                            bb.speed = 0
 
                         self.temp_speed = []
                         # temp_y = []
@@ -195,6 +198,10 @@ class Game:
                         for b in self.bullets:
                             b.speed = self.temp_bullet_speed[0]
                             del self.temp_bullet_speed[0]
+                        for bb in self.boss_bullets:
+                        
+                            bb.speed = self.temp_bossbullet_speed[0]
+                            del self.temp_bossbullet_speed[0]
 
                         for e in self.enemies:
                             e.speed = self.temp_speed[0]
@@ -215,6 +222,11 @@ class Game:
                     for b in self.bullets:
                         b.speed = self.temp_bullet_speed[0]
                         del self.temp_bullet_speed[0]
+
+                    for bb in self.boss_bullets:
+                        
+                            bb.speed = self.temp_bossbullet_speed[0]
+                            del self.temp_bossbullet_speed[0]
 
                     for e in self.enemies:
                         e.speed = self.temp_speed[0]
