@@ -372,7 +372,10 @@ class Game:
 
     # Game difficulty
     def game_stage(self):
-        if self.score == 20 and len(self.enemies) >= 2 and self.stage1:
+        stage_point1 = [20, 30]
+        stage_point2 = [40, 50]
+        stage_point3 = [45, 65]
+        if self.score == stage_point1[self.stage] and len(self.enemies) >= 2 and self.stage1:
             self.enemies.clear()
             self.number_of_enemies = 4
             self.stage1, self.stage2 = False, True
@@ -381,7 +384,7 @@ class Game:
                 #self.number_of_enemies = 4
                 self.enemies.append(self.Monster)
             return
-        if self.score == 40 and len(self.enemies) >= 4 and self.stage2:
+        if self.score == stage_point2[self.stage] and len(self.enemies) >= 4 and self.stage2:
             self.enemies.clear()
             self.stage2, self.stage3 = False, True
             self.number_of_enemies = 6
@@ -390,7 +393,7 @@ class Game:
                 #self.number_of_enemies = 6
                 self.enemies.append(self.Monster)
             return
-        if self.score == 45 and len(self.enemies) >= 6 and self.stage3:
+        if self.score == stage_point3[self.stage] and len(self.enemies) >= 6 and self.stage3:
             # Init boss
             pygame.mixer.music.load('./Background/boss.mp3')
             pygame.mixer.music.play(-1)
@@ -409,11 +412,12 @@ class Game:
                 if self.distance(b.x, b.y, self.boss.x + 98, self.boss.y + 67) < 50:
                     self.boss.health -= 1
                     self.bullets.remove(b)
-                    print(f"health -= 1\nhealth:{self.boss.health}")
+                    print(f"health - 1\nhealth:{self.boss.health}")
+                    break
             except:
                 pass
-            if b.y < 0:
-                self.bullets.remove(b)
+            # if b.y < -50:
+            #     self.bullets.remove(b)
 
     # Bullet hit
     def hit(self, bullet):
@@ -434,16 +438,16 @@ class Game:
             # Random action
             ## Vertical move
             if self.type_move == 1:
-                e.y += e.speed
+                e.y += e.speed * 2
             ## Different angle
             if e.x <= 400:
                 if self.type_move == 2:
                     e.x += e.speed * random.uniform(0.5, 1)
-                    e.y += e.speed * random.uniform(0.8, 1)
+                    e.y += e.speed * random.uniform(0.8, 1) * 2
             elif e.x > 400:
                 if self.type_move == 2:
                     e.x -= e.speed * random.uniform(0.5, 1)
-                    e.y += e.speed * random.uniform(0.8, 1)
+                    e.y += e.speed * random.uniform(0.8, 1) * 2
             ## Horizontal move
             if self.type_move == 3:
                 if e.x < 50:
@@ -616,7 +620,8 @@ class Game:
         self.init_object()
         self.pause = False
         self.pause2 = False
-        self.menu()
+        if self.stage == 0:
+            self.menu()
         while True:
             self.clock.tick(self.FRAME)
             self.handle_events()
@@ -628,5 +633,5 @@ class Game:
 
 if __name__ == '__main__':
     game = Game()
-    # game.start_game()
-    game.start_game(1)
+    game.start_game()
+    # game.start_game(1)
