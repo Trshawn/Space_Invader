@@ -59,20 +59,18 @@ class Game:
         # menu
         self.bgImg_menu = pygame.image.load('./Background/bg_menu.png')
 
-        self.start_image = pygame.image.load("./Menu/resume_nor.png").convert_alpha()
-        self.intro_image = pygame.image.load("./Menu/resume_nor.png").convert_alpha()
-        self.ex_image = pygame.image.load("./Menu/resume_nor.png").convert_alpha()
-        self.back_image = pygame.image.load("./Menu/resume_nor.png").convert_alpha()
+        self.start_image = pygame.image.load("./Menu/game_play.png").convert_alpha()
+        self.ex_image = pygame.image.load("./Menu/quitgame.png").convert_alpha()
 
         self.menu_image = pygame.image.load("./Menu/menu.png").convert_alpha()
         self.menu_rect = self.menu_image.get_rect()
-        self.menu_rect.left, self.menu_rect.top = 300, 100
+        self.menu_rect.left, self.menu_rect.top = 300, 180
 
         self.menu_resume_image = pygame.image.load("./Menu/menu_resume.png").convert_alpha()
         self.menu_resume_rect = self.menu_resume_image.get_rect()
         self.menu_resume_rect.left, self.menu_resume_rect.top = 400, 200
 
-        self.menu_quit_image = pygame.image.load("./Menu/quitgame_nor.png").convert_alpha()
+        self.menu_quit_image = pygame.image.load("./Menu/quitgame.png").convert_alpha()
         self.menu_quit_rect = self.menu_quit_image.get_rect()
         self.menu_quit_rect.left, self.menu_quit_rect.top = 400, 300
 
@@ -83,7 +81,7 @@ class Game:
         # restart
         self.restart_image = pygame.image.load("./Menu/restart.png").convert_alpha()
         self.restart_rect = self.restart_image.get_rect()
-        self.restart_rect.left, self.restart_rect.top = 400, 200
+        self.restart_rect.left, self.restart_rect.top = 350, 350
 
         # game pause
         self.pause = False
