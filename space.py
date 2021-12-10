@@ -214,7 +214,10 @@ class Game:
                 if event.button == 1 and self.back_home_rect.collidepoint(event.pos):
                     # running = False
                     self.enemies.clear()
-                    del self.boss
+                    try:
+                        del self.boss
+                    except:
+                        pass
                     self.boss_bullets.clear()
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
@@ -223,11 +226,14 @@ class Game:
                     self.player = Planeplayer()
                     self.score = 0
                     self.special_bullets = 3
-                    self.start_game()
+                    self.start_game(1)
 
                 if event.button == 1 and self.restart_rect.collidepoint(event.pos):
                     self.enemies.clear()
-                    del self.boss
+                    try:
+                        del self.boss
+                    except:
+                        pass
                     self.boss_bullets.clear()
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
@@ -241,7 +247,7 @@ class Game:
                     self.special_bullets = 3
                     self.player.hp = 10
                     # self.is_over = False
-                    self.start_game()
+                    self.start_game(1)
 
                 if event.button == 1 and self.pause2_rect.collidepoint(event.pos):
                     self.pause2 = not self.pause2
