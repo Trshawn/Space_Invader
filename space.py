@@ -509,7 +509,7 @@ class Game:
         elif self.score == 45:
             text = "The boss is coming!!!"
             level_render = self.over_font.render(text,True,(255,105,180))
-            self.screen.blit(level_render,(200,300))
+            self.screen.blit(level_render,(100,300))
         
         else:
             text = " "
