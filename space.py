@@ -552,7 +552,7 @@ class Game:
 
     # Game complete
     def check(self):
-        if self.player.hp <= 0:
+        if self.player.hp <= 0 and not self.success:
             self.player.hp = 0
             text = "Game Over"
             render = self.over_font.render(text, True, (255, 255, 0))
