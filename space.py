@@ -68,11 +68,11 @@ class Game:
 
         self.menu_resume_image = pygame.image.load("./Menu/menu_resume.png").convert_alpha()
         self.menu_resume_rect = self.menu_resume_image.get_rect()
-        self.menu_resume_rect.left, self.menu_resume_rect.top = 400, 200
+        self.menu_resume_rect.left, self.menu_resume_rect.top = 400, 260
 
         self.menu_quit_image = pygame.image.load("./Menu/quitgame.png").convert_alpha()
         self.menu_quit_rect = self.menu_quit_image.get_rect()
-        self.menu_quit_rect.left, self.menu_quit_rect.top = 400, 300
+        self.menu_quit_rect.left, self.menu_quit_rect.top = 400, 330
 
         self.back_home_image = pygame.image.load("./Menu/home.png").convert_alpha()
         self.back_home_rect = self.back_home_image.get_rect()
