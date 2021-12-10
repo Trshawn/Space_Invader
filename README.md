@@ -1,19 +1,50 @@
 # Space_Invader
 
-Run the game: run 'space.py' file.
+| Group      | SixGod |
+| ----       |    -------   |
+| Game name  | Space Invader|
+| Language   | Python        |
 
-* Developed with: Python 3.9.7
-* Libraries: pygame 2.1.0, math
-* Game Resolution: 800 * 600
-* Support operating system: Windows, Mac
+| Group Member | Student ID |
+| ---- | ---- |
+| Zefeng Tang | psxzt3 |
+| Rui Wang | psxrw10 |
+| Guangyang Chen | psxgc5 |
+| Yue Xue | psxyx15 |
+| Zhi Lin | alyzl42 |
+| Luyun Xie | psxlx2 |
 
-Files Announcement
---------
-* /Sound Effect ---- Music files used by the game(.wav format, .mp3 format)
+## Environment
+- Windows or MacOS
+- Python
 
-* /Pic ---- Picture files used by the game(.png format) <br> 
-            bg_menu.png, bg.png, bg1.png <br>
-            bullet.png, boss_bullet0.png <br>
-            boss.png, enemy.png, enemy2.png <br>
-            audio_off.png, audio_on.png, game_pause.png, game_play.png, home.png, menu_resume.png, menu.png, pause_pressed.png, quitgame_nor.png, restart.png, resume_nor.png <br>
-            player.png
+## Contents
+- Image
+- Sound
+- Code
+--------------------------------------------------------------------
+### space.py
+- The main game running program
+### player.py
+- Generate player plane
+### my_menu.py
+- Load all menu images
+### boss.py
+- Generate boss
+### enemies.py
+- Generate enemies
+### bullets.py
+- Generate bullets from player's plane
+### boss_bullets.py
+- Generate bullets from boss
+### backgorund_sound.py
+- Create animation of Background moving
+--------------------------------------------------------------------
+## Further Questions
+Please send to the email address below for further questions
+- Zefeng Tang: psxzt3@nottingham.ac.uk
+- Zhi Lin: alyzl42@nottingham.ac.uk
+- Rui Wang: psxrw10@nottingham.ac.uk
+- Luyun Xie: psxlx2@nottingham.ac.uk
+- Yue Xue: psxyx15@nottingham.ac.uk
+- Guangyang Chen: psxgc5@nottingham.ac.uk
