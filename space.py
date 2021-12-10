@@ -169,6 +169,11 @@ class Game:
                     self.pause = not self.pause
                     if self.pause:
                         self.pause_image = self.game_play_image
+                        self.temp_bullet_speed = []
+                        for b in self.bullets:
+                            self.temp_bullet_speed.append(b.speed)
+                            b.speed = 0
+                        self.temp_bossbullet_speed = []
 
                         self.temp_speed = []
                         # temp_y = []
@@ -187,6 +192,10 @@ class Game:
 
                     else:
                         self.pause_image = self.game_pause_image
+                        for b in self.bullets:
+                            b.speed = self.temp_bullet_speed[0]
+                            del self.temp_bullet_speed[0]
+
                         for e in self.enemies:
                             e.speed = self.temp_speed[0]
                             del self.temp_speed[0]
@@ -203,6 +212,10 @@ class Game:
                 if event.button == 1 and self.menu_resume_rect.collidepoint(event.pos):
                     self.pause = False
                     self.pause_image = self.game_pause_image
+                    for b in self.bullets:
+                        b.speed = self.temp_bullet_speed[0]
+                        del self.temp_bullet_speed[0]
+
                     for e in self.enemies:
                         e.speed = self.temp_speed[0]
                         del self.temp_speed[0]
