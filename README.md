@@ -10,7 +10,6 @@ Support operating system: Windows, Mac
 Files Announcement
 --------
 * /Sound Effect ---- Music files used by the game(.wav format, .mp3 format)
-*             All music
 
 * /Pic ---- Picture files used by the game(.png format) 
             - bg_menu.png, bg.png, bg1.png
