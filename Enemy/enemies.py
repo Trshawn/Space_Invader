@@ -3,7 +3,7 @@ import random
 
 HEIGHT = pygame.image.load("./Background/bg.png").get_height()
 
-imgs = ["./Enemy/enemy3.png","./Enemy/enemy1.png"]
+imgs = ["./Enemy/enemy3.png", "./Enemy/enemy1.png"]
 
 
 class Enemy():
@@ -17,4 +17,3 @@ class Enemy():
     def reset(self):
         self.x = random.randint(50, 750)
         self.y = -self.enemyImg.get_height()
-

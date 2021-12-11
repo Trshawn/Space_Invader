@@ -55,7 +55,7 @@ class Game:
         self.flag_UP = 0
 
         self.number = 0
-        # stage
+
         self.stage_point1 = [20, 30]
         self.stage_point2 = [40, 50]
         self.stage_point3 = [45, 65]
@@ -86,12 +86,7 @@ class Game:
         # restart
         self.restart_image = pygame.image.load("./Menu/restart.png").convert_alpha()
         self.restart_rect = self.restart_image.get_rect()
-        self.restart_rect.left, self.restart_rect.top = 350, 250
-
-        # next stage
-        self.nextstage_image = pygame.image.load("./Menu/nextstage.png").convert_alpha()
-        self.nextstage_rect = self.nextstage_image.get_rect()
-        self.nextstage_rect.left, self.nextstage_rect.top = 350, 450
+        self.restart_rect.left, self.restart_rect.top = 350, 350
 
         # game pause
         self.pause = False
@@ -103,6 +98,11 @@ class Game:
         self.pause_rect = self.game_pause_image.get_rect()
         self.pause_rect.left, self.pause_rect.top = 700, 10
         self.pause_image = self.game_pause_image
+
+        # next stage
+        self.nextstage_image = pygame.image.load("./Menu/nextstage.png").convert_alpha()
+        self.nextstage_rect = self.nextstage_image.get_rect()
+        self.nextstage_rect.left, self.nextstage_rect.top = 350, 450
 
         # pause music
         self.pause2 = False
@@ -130,7 +130,7 @@ class Game:
         self.enemies = []
 
         for i in range(self.number_of_enemies):
-            self.Monster = Enemy()
+            self.Monster = Enemy(self.stage)
             self.enemies.append(self.Monster)
 
         self.boss_flag = False
@@ -142,7 +142,7 @@ class Game:
         pygame.mixer.music.load('./Background/bg.mp3')
         pygame.mixer.music.play(-1)
         self.screen.blit(self.bgImg_menu, (0, 0))
-        self.screen.blit(self.menu_text,(151, 60))
+        self.screen.blit(self.menu_text, (151, 60))
         start_button_rect = self.start_image.get_rect()
         start_button_rect.left, start_button_rect.top = 350, 300
         self.screen.blit(self.start_image, start_button_rect)
@@ -208,7 +208,6 @@ class Game:
                             b.speed = self.temp_bullet_speed[0]
                             del self.temp_bullet_speed[0]
                         for bb in self.boss_bullets:
-                        
                             bb.speed = self.temp_bossbullet_speed[0]
                             del self.temp_bossbullet_speed[0]
 
@@ -233,9 +232,8 @@ class Game:
                         del self.temp_bullet_speed[0]
 
                     for bb in self.boss_bullets:
-                        
-                            bb.speed = self.temp_bossbullet_speed[0]
-                            del self.temp_bossbullet_speed[0]
+                        bb.speed = self.temp_bossbullet_speed[0]
+                        del self.temp_bossbullet_speed[0]
 
                     for e in self.enemies:
                         e.speed = self.temp_speed[0]
@@ -256,7 +254,7 @@ class Game:
                     self.boss_bullets.clear()
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
-                        Monster = Enemy()
+                        Monster = Enemy(self.stage)
                         self.enemies.append(Monster)
                     self.player = Planeplayer()
                     self.score = 0
@@ -264,7 +262,7 @@ class Game:
                     self.stage1 = True
                     self.stage2 = False
                     self.stage3 = False
-                    self.start_game(1)
+                    self.start_game()
 
                 if event.button == 1 and self.restart_rect.collidepoint(event.pos):
                     self.enemies.clear()
@@ -275,7 +273,7 @@ class Game:
                     self.boss_bullets.clear()
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
-                        Monster = Enemy()
+                        Monster = Enemy(self.stage)
                         self.enemies.append(Monster)
                     self.player = Planeplayer()
                     # for e in enemies:
@@ -288,8 +286,7 @@ class Game:
                     self.stage1 = True
                     self.stage2 = False
                     self.stage3 = False
-                    self.start_game(1)
-
+                    self.start_game()
                 if event.button == 1 and self.nextstage_rect.collidepoint(event.pos):
                     self.enemies.clear()
                     try:
@@ -299,7 +296,7 @@ class Game:
                     self.boss_bullets.clear()
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
-                        Monster = Enemy()
+                        Monster = Enemy(self.stage)
                         self.enemies.append(Monster)
                     self.player = Planeplayer()
                     # for e in enemies:
@@ -315,7 +312,6 @@ class Game:
                     self.stage += 1
                     self.success = False
                     self.start_game(self.stage)
-
 
                 if event.button == 1 and self.pause2_rect.collidepoint(event.pos):
                     self.pause2 = not self.pause2
@@ -346,7 +342,7 @@ class Game:
                         print("发射子弹...")
                         if self.score >= 70:  # double bullets
                             self.bullets.append(Bullet(self.player.x - self.player.img.get_width() / 3, self.player.y))
-                            self.bullets.append(Bullet(self.player.x + self. player.img.get_width() / 3, self.player.y))
+                            self.bullets.append(Bullet(self.player.x + self.player.img.get_width() / 3, self.player.y))
                             if self.score >= 100:  # triple bullets
                                 self.bullets.append(Bullet(self.player.x, self.player.y))
                         else:
@@ -389,32 +385,39 @@ class Game:
                         if self.boss.health <= 20:
                             pygame.time.set_timer(BOSS_BULLETS_EVENT, 700)
                             self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                                self.boss.y + self.boss.image.get_height() - 25, self.stage, 2))
+                                                                self.boss.y + self.boss.image.get_height() - 25,
+                                                                self.stage, 2))
                             self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                                self.boss.y + self.boss.image.get_height() - 25, self.stage, -2))
+                                                                self.boss.y + self.boss.image.get_height() - 25,
+                                                                self.stage, -2))
                         if self.number % 10 in range(7):
                             self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                                self.boss.y + self.boss.image.get_height() - 25, self.stage, 0))
+                                                                self.boss.y + self.boss.image.get_height() - 25,
+                                                                self.stage, 0))
                             self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                                self.boss.y + self.boss.image.get_height() - 25, self.stage, 1))
+                                                                self.boss.y + self.boss.image.get_height() - 25,
+                                                                self.stage, 1))
                             self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                                self.boss.y + self.boss.image.get_height() - 25, self.stage, -1))
+                                                                self.boss.y + self.boss.image.get_height() - 25,
+                                                                self.stage, -1))
                         else:
                             self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                                self.boss.y + self.boss.image.get_height() - 25, self.stage, 0))
+                                                                self.boss.y + self.boss.image.get_height() - 25,
+                                                                self.stage, 0))
                         self.number += 1
                 except:
                     pass
 
     # Game difficulty
     def game_stage(self):
+
         if self.score == self.stage_point1[self.stage] and len(self.enemies) >= 2 and self.stage1:
             self.enemies.clear()
             self.number_of_enemies = 4
             self.stage1, self.stage2 = False, True
             for i in range(self.number_of_enemies):
-                self.Monster = Enemy()
-                #self.number_of_enemies = 4
+                self.Monster = Enemy(self.stage)
+                # self.number_of_enemies = 4
                 self.enemies.append(self.Monster)
             return
         if self.score == self.stage_point2[self.stage] and len(self.enemies) >= 4 and self.stage2:
@@ -422,8 +425,8 @@ class Game:
             self.stage2, self.stage3 = False, True
             self.number_of_enemies = 6
             for i in range(self.number_of_enemies):
-                self.Monster = Enemy()
-                #self.number_of_enemies = 6
+                self.Monster = Enemy(self.stage)
+                # self.number_of_enemies = 6
                 self.enemies.append(self.Monster)
             return
         if self.score == self.stage_point3[self.stage] and len(self.enemies) >= 6 and self.stage3:
@@ -432,7 +435,7 @@ class Game:
             pygame.mixer.music.play(-1)
             if self.pause2 == True:
                 pygame.mixer.music.stop()
-            self.boss = Boss()
+            self.boss = Boss(self.stage)
             self.boss_flag = True
 
     # Bullet display
@@ -469,10 +472,11 @@ class Game:
         for e in self.enemies:
             self.screen.blit(e.enemyImg, (e.x, e.y))
             # Random action
-            ## Vertical move
+            # Vertical move
             if self.type_move == 1:
                 e.y += e.speed * 2
-            ## Different angle
+
+            # Different angle
             if e.x <= 400:
                 if self.type_move == 2:
                     e.x += e.speed * random.uniform(0.5, 1)
@@ -481,12 +485,14 @@ class Game:
                 if self.type_move == 2:
                     e.x -= e.speed * random.uniform(0.5, 1)
                     e.y += e.speed * random.uniform(0.8, 1) * 2
-            ## Horizontal move
+
+            # Horizontal move
             if self.type_move == 3:
                 if e.x < 50:
                     e.x += e.speed
                 elif e.x > 750:
                     e.x -= e.speed
+
             # Detect distance between enemy and player
             if self.distance(e.x, e.y, self.player.x, self.player.y) < 25:
                 if self.pause2 == False:
@@ -542,29 +548,27 @@ class Game:
 
         if self.score == self.stage_point1[self.stage]:
             text = "Level up!"
-            level_render = self.over_font.render(text,True,(255,105,180))
-            self.screen.blit(level_render,(300,300))
-        
+            level_render = self.over_font.render(text, True, (255, 105, 180))
+            self.screen.blit(level_render, (300, 300))
+
         elif self.score == self.stage_point2[self.stage]:
             text = "The boss is coming!!!"
-            level_render = self.over_font.render(text,True,(255,105,180))
-            self.screen.blit(level_render,(90,300))
-        
-        else:
-            text = " "
-            level_render = self.font.render(text,True,(255,105,180))
-            self.screen.blit(level_render,(300,300))
+            level_render = self.over_font.render(text, True, (255, 105, 180))
+            self.screen.blit(level_render, (50, 300))
 
-        #pygame.display.update()
-        
+        else:
+            text = ""
+            level_render = self.font.render(text, True, (255, 105, 180))
+            self.screen.blit(level_render, (300, 300))
+
     # Display score
     def show_score(self):
         text = f"Score:{self.score}, BB:{self.special_bullets}, HP:{self.player.hp}"
-        text2 = f"Level: {self.stage+1}"
+        text1 = f"Level: {self.stage + 1}"
         score_render = self.font.render(text, True, (255, 255, 255))
-        score_render2 = self.font.render(text2, True, (255, 255, 255))
+        score_render1 = self.font.render(text1, True, (255, 255, 255))
         self.screen.blit(score_render, (10, 10))
-        self.screen.blit(score_render2, (10, 50))
+        self.screen.blit(score_render1, (10, 50))
 
     # Player and Boss HP display
     def show_health(self, hp):
@@ -589,8 +593,6 @@ class Game:
             pygame.draw.rect(self.screen, (0, 255, 0), (green_x, green_y, green_width, green_height))
         except:
             pass
-
-        pygame.display.update()
 
     # Game complete
     def check(self):
@@ -632,7 +634,8 @@ class Game:
 
         # refresh level
         self.level_up()
-        
+
+        self.show_health(self.player.hp)
         # refresh score
         self.show_score()
 
@@ -663,7 +666,6 @@ class Game:
             self.clock.tick(self.FRAME)
             self.handle_events()
             self.game_stage()
-            self.show_health(self.player.hp)
             self.player.move_player()
             self.refresh()
 
@@ -671,4 +673,3 @@ class Game:
 if __name__ == '__main__':
     game = Game()
     game.start_game()
-    # game.start_game(1)
