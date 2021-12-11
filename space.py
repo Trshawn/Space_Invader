@@ -316,6 +316,7 @@ class Game:
                         del self.boss
                     except:
                         pass
+                    
                     self.boss_bullets.clear()
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
@@ -338,7 +339,7 @@ class Game:
                         game=Game()
                         game.start_game(self.stage,2)
                     self.success = False
-                    self.start_game(self.stage)
+                    self.start_game(self.stage, self.num_of_player)
 
                 if event.button == 1 and self.pause2_rect.collidepoint(event.pos):
                     self.pause2 = not self.pause2
