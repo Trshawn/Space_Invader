@@ -26,5 +26,3 @@ class Planeplayer():
         if self.hp>0:
             if self.x < 0:
                 self.x = 0
-            if self.y < 0:
-                self.y = 0
