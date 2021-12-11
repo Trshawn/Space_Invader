@@ -234,8 +234,8 @@ class Game:
 
                     for bb in self.boss_bullets:
                         
-                            bb.speed = self.temp_bossbullet_speed[0]
-                            del self.temp_bossbullet_speed[0]
+                        bb.speed = self.temp_bossbullet_speed[0]
+                        del self.temp_bossbullet_speed[0]
 
                     for e in self.enemies:
                         e.speed = self.temp_speed[0]
@@ -264,7 +264,7 @@ class Game:
                     self.stage1 = True
                     self.stage2 = False
                     self.stage3 = False
-                    self.start_game(1)
+                    self.start_game()
 
                 if event.button == 1 and self.restart_rect.collidepoint(event.pos):
                     self.enemies.clear()
@@ -288,7 +288,7 @@ class Game:
                     self.stage1 = True
                     self.stage2 = False
                     self.stage3 = False
-                    self.start_game(1)
+                    self.start_game()
 
                 if event.button == 1 and self.nextstage_rect.collidepoint(event.pos):
                     self.enemies.clear()
