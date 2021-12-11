@@ -287,6 +287,7 @@ class Game:
                     self.stage2 = False
                     self.stage3 = False
                     self.start_game()
+
                 if event.button == 1 and self.nextstage_rect.collidepoint(event.pos):
                     self.enemies.clear()
                     try:
