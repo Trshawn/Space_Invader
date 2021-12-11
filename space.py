@@ -172,6 +172,8 @@ class Game:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1 and self.start_button_rect.collidepoint(event.pos):
                         flag = False
+                    if event.button == 1 and self.start2_rect.collidepoint(event.pos):
+                        self.start_game(0,2)
                     if event.button == 1 and self.ex_button_rect.collidepoint(event.pos):
                         pygame.quit()
                         exit()
@@ -664,11 +666,19 @@ class Game:
         self.screen.blit(score_render, (10, 10))
         self.screen.blit(score_render1, (10, 50))
         self.screen.blit(hp1_render, (450, 10))
+        try:
+            hp2 = f"HP:{self.player2.hp}"
+            hp2_render = self.font.render(hp2, True, (255, 255, 255))
+            self.screen.blit(hp2_render, (450, 50))
+        except:
+            pass
 
     # Player and Boss HP display
     def show_health(self, hp):
         # Player
         hp = self.player.hp
+        if hp < 0:
+            hp = 0
         red_x, red_y = 550, 20
         red_width, red_height = 130, 10
         green_x, green_y = 550, 20
@@ -680,6 +690,8 @@ class Game:
         # Player2
         try:
             hp2 = self.player2.hp
+            if hp2 < 0:
+                hp2 = 0
             red_x2, red_y2 = 550, 50
             green_x2, green_y2 = 550, 50
             green_width2, green_height = 130 - 13 * (10 - hp2), 10
@@ -788,7 +800,7 @@ class Game:
         self.init_object()
         self.pause = False
         self.pause2 = False
-        if self.stage == 0:
+        if self.stage == 0 and self.num_of_player == 1:
             self.menu()
         while True:
             self.clock.tick(self.FRAME)
@@ -804,4 +816,4 @@ class Game:
 
 if __name__ == '__main__':
     game = Game()
-    game.start_game(0,2)  # change mode of levels and players
+    game.start_game()  # change mode of levels and players
