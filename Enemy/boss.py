@@ -3,7 +3,7 @@ import pygame
 
 WIDTH = pygame.image.load("./Background/bg.png").get_width()
 
-imgs = ["./Enemy/boss.png",
+imgs = ["./Enemy/boss.png", "./Enemy/boss2.png",
         "./Enemy/null.png"]
 
 
