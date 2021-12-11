@@ -67,7 +67,8 @@ class Game:
         self.menu_text = pygame.image.load("./Background/menu_text2.png")
         self.bgImg_menu = pygame.image.load('./Background/bg_menu.png')
 
-        self.start_image = pygame.image.load("./Menu/game_start.png").convert_alpha()
+        self.start_image = pygame.image.load("./Menu/game_play.png").convert_alpha()
+        
         self.ex_image = pygame.image.load("./Menu/quitgame.png").convert_alpha()
 
         self.menu_image = pygame.image.load("./Menu/menu.png").convert_alpha()
@@ -93,7 +94,7 @@ class Game:
 
         # game pause
         self.pause = False
-        self.game_play_image = pygame.image.load("./Menu/game_play.png").convert_alpha()
+        self.game_play_image = pygame.image.load("./Menu/game_start.png").convert_alpha()
         self.game_pause_image = pygame.image.load("./Menu/game_pause.png").convert_alpha()
         self.audio_on_image = pygame.image.load("./Menu/audio_on.png").convert_alpha()
         self.audio_off_image = pygame.image.load("./Menu/audio_off.png").convert_alpha()
