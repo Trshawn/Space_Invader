@@ -43,7 +43,6 @@ class Game:
         self.score = 0
         self.over_font = pygame.font.Font('freesansbold.ttf', 64)
         self.font = pygame.font.Font('freesansbold.ttf', 32)
-        # self.is_over = False
         self.success = False
         self.stage1 = True
         self.stage2 = False
@@ -53,6 +52,10 @@ class Game:
         self.flag_DOWN = 0
         self.flag_LEFT = 0
         self.flag_UP = 0
+        self.flag_RIGHT_player2 = 0
+        self.flag_DOWN_player2 = 0
+        self.flag_LEFT_player2 = 0
+        self.flag_UP_player2 = 0
 
         self.number = 0
 
@@ -120,6 +123,9 @@ class Game:
 
         # Init player
         self.player = Planeplayer()
+        if self.num_of_player == 2:
+            self.player = Planeplayer(250, 450)
+            self.player2 = Planeplayer(450, 450, "./Plane/player1.png")
 
         # Init bullets
         self.bullets = []
@@ -173,6 +179,7 @@ class Game:
                 pygame.quit()
                 exit()
 
+            # Button click
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1 and self.pause_rect.collidepoint(event.pos):
                     self.pause = not self.pause
@@ -324,7 +331,7 @@ class Game:
                         self.pause2_image = self.audio_off_image
                         pygame.mixer.music.play(-1)
                         self.explosion = pygame.mixer.Sound('./Sound Effect/exp.wav')
-            # Button click
+
             if not self.pause:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RIGHT:
@@ -348,6 +355,31 @@ class Game:
                                 self.bullets.append(Bullet(self.player.x, self.player.y))
                         else:
                             self.bullets.append(Bullet(self.player.x, self.player.y))
+
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_d:
+                            self.player2.horizontal = 5
+                            self.flag_RIGHT_player2 = 1
+                        if event.key == pygame.K_a:
+                            self.player2.horizontal = -5
+                            self.flag_LEFT_player2 = 1
+                        if event.key == pygame.K_w:
+                            self.player2.vertical = -5
+                            self.flag_UP_player2 = 1
+                        if event.key == pygame.K_s:
+                            self.player2.vertical = 5
+                            self.flag_DOWN_player2 = 1
+                        if event.key == pygame.K_e and self.player2.hp != 0 and not self.success:
+                            print("发射子弹...")
+                            if self.score >= 70:  # double bullets
+                                self.bullets.append(
+                                    Bullet(self.player2.x - self.player2.img.get_width() / 3, self.player2.y))
+                                self.bullets.append(
+                                    Bullet(self.player2.x + self.player2.img.get_width() / 3, self.player2.y))
+                                if self.score >= 100:  # triple bullets
+                                    self.bullets.append(Bullet(self.player2.x, self.player2.y))
+                            else:
+                                self.bullets.append(Bullet(self.player2.x, self.player2.y))
                     if event.key == pygame.K_r and self.special_bullets > 0:  # 清屏炸弹
                         self.score += self.number_of_enemies * 5
                         for e in self.enemies:
@@ -381,6 +413,31 @@ class Game:
                                 self.player.vertical = 0
                             else:
                                 self.player.vertical = -5
+                    if event.key != pygame.K_e:
+                        if event.key == pygame.K_d:
+                            self.flag_RIGHT_player2 = 0
+                            if self.flag_LEFT_player2 == 0:
+                                self.player2.horizontal = 0
+                            else:
+                                self.player2.horizontal = -5
+                        if event.key == pygame.K_a:
+                            self.flag_LEFT_player2 = 0
+                            if self.flag_RIGHT_player2 == 0:
+                                self.player2.horizontal = 0
+                            else:
+                                self.player2.horizontal = 5
+                        if event.key == pygame.K_s:
+                            self.flag_DOWN_player2 = 0
+                            if self.flag_UP_player2 == 0:
+                                self.player2.vertical = 0
+                            else:
+                                self.player2.vertical = 5
+                        if event.key == pygame.K_w:
+                            self.flag_UP_player2 = 0
+                            if self.flag_DOWN_player2 == 0:
+                                self.player2.vertical = 0
+                            else:
+                                self.player2.vertical = -5
                 try:
                     if event.type == BOSS_BULLETS_EVENT and self.boss_flag and self.boss.y > -50 and self.boss.health > 0:
                         if self.boss.health <= 20:
@@ -475,17 +532,17 @@ class Game:
             # Random action
             # Vertical move
             if self.type_move == 1:
-                e.y += e.speed * 5
+                e.y += e.speed * 2
 
             # Different angle
             if e.x <= 400:
                 if self.type_move == 2:
                     e.x += e.speed * random.uniform(0.5, 1)
-                    e.y += e.speed * random.uniform(0.8, 1) * 5
+                    e.y += e.speed * random.uniform(0.8, 1) * 2
             elif e.x > 400:
                 if self.type_move == 2:
                     e.x -= e.speed * random.uniform(0.5, 1)
-                    e.y += e.speed * random.uniform(0.8, 1) * 5
+                    e.y += e.speed * random.uniform(0.8, 1) * 2
 
             # Horizontal move
             if self.type_move == 3:
@@ -506,6 +563,20 @@ class Game:
                 # self.is_over = True
                 if self.player.hp <= 0:
                     self.enemies.clear()
+            try:
+                if self.distance(e.x, e.y, self.player2.x, self.player2.y) < 25:
+                    if self.pause2 == False:
+                        self.explosion.play()
+                    self.player2.hp -= 1
+                    # Hit by enemies and reset this enemy
+                    self.enemies.remove(e)
+                    self.enemies.append(e)
+                    e.reset()
+                    # self.is_over = True
+                    if self.player.hp <= 0:
+                        self.enemies.clear()
+            except:
+                pass
             # Outside the screen = reset
             if e.y > 600:
                 e.reset()
@@ -515,8 +586,6 @@ class Game:
         if self.boss.health == 0:
             self.success = True
             self.enemies.clear()
-        if self.distance(self.boss.x+self.boss.image.get_width()/2, self.boss.y+self.boss.image.get_height()/2, self.player.x+self.player.img.get_width()/2, self.player.y+self.player.img.get_height()/2) < 50:
-            self.player.hp = 0  # player will die when touch the boss
         self.screen.blit(self.boss.image, (self.boss.x, self.boss.y))
         self.boss.update()
 
@@ -535,10 +604,21 @@ class Game:
                     self.explosion.play()
 
                 self.boss_bullets.remove(b)
-                # self.is_over = True
                 if self.player.hp <= 0:
                     self.explosion.stop()
                     self.enemies.clear()
+
+            try:
+                if self.distance(b.x, b.y, self.player2.x, self.player2.y) < 50:
+                    self.player2.hp -= 1
+                    if self.pause2 == True:
+                        self.explosion.stop()
+                    else:
+                        self.explosion.play()
+
+                    self.boss_bullets.remove(b)
+            except:
+                pass
 
     # Distance formula
     def distance(self, bx, by, ex, ey):
@@ -566,12 +646,15 @@ class Game:
 
     # Display score
     def show_score(self):
-        text = f"Score:{self.score}, BB:{self.special_bullets}, HP:{self.player.hp}"
+        text = f"Score:{self.score}, BB:{self.special_bullets}"
         text1 = f"Level: {self.stage + 1}"
+        hp1 = f"HP:{self.player.hp}"
         score_render = self.font.render(text, True, (255, 255, 255))
         score_render1 = self.font.render(text1, True, (255, 255, 255))
+        hp1_render = self.font.render(hp1, True, (255, 255, 255))
         self.screen.blit(score_render, (10, 10))
         self.screen.blit(score_render1, (10, 50))
+        self.screen.blit(hp1_render, (450, 10))
 
     # Player and Boss HP display
     def show_health(self, hp):
@@ -584,12 +667,25 @@ class Game:
         # Draw Max HP bar and Current HP bar
         pygame.draw.rect(self.screen, (255, 0, 0), (red_x, red_y, red_width, red_height))
         pygame.draw.rect(self.screen, (0, 255, 0), (green_x, green_y, green_width, green_height))
+
+        # Player2
+        try:
+            hp2 = self.player2.hp
+            red_x2, red_y2 = 550, 50
+            green_x2, green_y2 = 550, 50
+            green_width2, green_height = 130 - 13 * (10 - hp2), 10
+            # Draw Max HP bar and Current HP bar
+            pygame.draw.rect(self.screen, (255, 0, 0), (red_x2, red_y2, red_width, red_height))
+            pygame.draw.rect(self.screen, (0, 255, 0), (green_x2, green_y2, green_width2, green_height))
+        except:
+            pass
+
         # Boss
         try:
             bossHP = self.boss.health
-            red_x, red_y = 350, 20
+            red_x, red_y = 300, 20
             red_width, red_height = 130, 10
-            green_x, green_y = 350, 20
+            green_x, green_y = 300, 20
             green_width, green_height = 130 * (self.boss.health / 50), 10
             # Draw Max HP bar and Current HP bar
             pygame.draw.rect(self.screen, (255, 0, 0), (red_x, red_y, red_width, red_height))
@@ -621,6 +717,10 @@ class Game:
 
         # refresh player
         self.screen.blit(self.player.img, (self.player.x, self.player.y))
+        try:
+            self.screen.blit(self.player2.img, (self.player2.x, self.player2.y))
+        except:
+            pass
 
         # refresh objects 
         self.show_bullets()
@@ -658,8 +758,9 @@ class Game:
         # update screen
         pygame.display.update()
 
-    def start_game(self, stage=0):
+    def start_game(self, stage=0, num_of_player=1):
         self.stage = stage
+        self.num_of_player = num_of_player
         self.init_object()
         self.pause = False
         self.pause2 = False
@@ -670,9 +771,13 @@ class Game:
             self.handle_events()
             self.game_stage()
             self.player.move_player()
+            try:
+                self.player2.move_player()
+            except:
+                pass
             self.refresh()
 
 
 if __name__ == '__main__':
     game = Game()
-    game.start_game()
+    game.start_game(1, 2)  # change mode of levels and players
