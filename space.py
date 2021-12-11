@@ -265,6 +265,10 @@ class Game:
                         del self.boss
                     except:
                         pass
+                    try:
+                        del self.player2
+                    except:
+                        pass
                     self.boss_bullets.clear()
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
@@ -282,6 +286,10 @@ class Game:
                     self.enemies.clear()
                     try:
                         del self.boss
+                    except:
+                        pass
+                    try:
+                        del self.player2
                     except:
                         pass
                     self.boss_bullets.clear()
@@ -588,8 +596,11 @@ class Game:
             except:
                 pass
             # Double players
-            if self.player2.hp<=0 and self.num_of_player ==2 and self.player.hp<=0:
-                self.enemies.clear()
+            try:
+                if self.player2.hp<=0 and self.num_of_player ==2 and self.player.hp<=0:
+                    self.enemies.clear()
+            except:
+                pass
             # Outside the screen = reset
             if e.y > 600:
                 e.reset()
@@ -669,9 +680,10 @@ class Game:
         self.screen.blit(score_render1, (10, 50))
         self.screen.blit(hp1_render, (450, 10))
         try:
-            hp2 = f"HP:{self.player2.hp}"
-            hp2_render = self.font.render(hp2, True, (255, 255, 255))
-            self.screen.blit(hp2_render, (450, 50))
+            if self.num_of_player == 2:
+                hp2 = f"HP:{self.player2.hp}"
+                hp2_render = self.font.render(hp2, True, (255, 255, 255))
+                self.screen.blit(hp2_render, (450, 50))
         except:
             pass
 
