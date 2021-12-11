@@ -325,6 +325,10 @@ class Game:
                     self.stage2 = False
                     self.stage3 = False
                     self.stage += 1
+                    if self.stage>=1:
+                        self.stage=0
+                        game=Game()
+                        game.start_game(self.stage,2)
                     self.success = False
                     self.start_game(self.stage)
 
@@ -570,8 +574,8 @@ class Game:
                 # Single player
                 if self.player.hp <= 0 and self.num_of_player == 1:
                     self.enemies.clear()
-                    #一号飞机移除
-                    pass
+                    self.player=Planeplayer(-100,10000)
+                    
             try:
                 if self.distance(e.x, e.y, self.player2.x, self.player2.y) < 25:
                     if self.pause2 == False:
@@ -586,7 +590,8 @@ class Game:
                 pass
             # Double players
             if self.player.hp <= 0 and self.player2.hp <= 0 and self.num_of_player == 2:
-                #一号，二号飞机移除
+                self.player=Planeplayer(-200,100000)
+                self.player2=Planeplayer(-100,100000)
                 self.enemies.clear()
             # Outside the screen = reset
             if e.y > 600:

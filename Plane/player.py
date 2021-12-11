@@ -23,7 +23,8 @@ class Planeplayer():
             self.x = WIDTH - self.img.get_width()
         if self.y > HEIGHT - self.img.get_height():
             self.y = HEIGHT - self.img.get_height()
-        if self.x < 0:
-            self.x = 0
-        if self.y < 0:
-            self.y = 0
+        if self.hp>0:
+            if self.x < 0:
+                self.x = 0
+            if self.y < 0:
+                self.y = 0
