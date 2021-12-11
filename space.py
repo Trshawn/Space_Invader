@@ -560,9 +560,11 @@ class Game:
                 self.enemies.remove(e)
                 self.enemies.append(e)
                 e.reset()
-                # self.is_over = True
-                if self.player.hp <= 0:
+                # Single player
+                if self.player.hp <= 0 and self.num_of_player == 1:
                     self.enemies.clear()
+                    #一号飞机移除
+                    pass
             try:
                 if self.distance(e.x, e.y, self.player2.x, self.player2.y) < 25:
                     if self.pause2 == False:
@@ -573,10 +575,12 @@ class Game:
                     self.enemies.append(e)
                     e.reset()
                     # self.is_over = True
-                    if self.player.hp <= 0:
-                        self.enemies.clear()
             except:
                 pass
+            # Double players
+            if self.player.hp <= 0 and self.player2.hp <= 0 and self.num_of_player == 2:
+                #一号，二号飞机移除
+                self.enemies.clear()
             # Outside the screen = reset
             if e.y > 600:
                 e.reset()
@@ -695,11 +699,20 @@ class Game:
 
     # Game complete
     def check(self):
-        if self.player.hp <= 0 and not self.success:
+        # Single player
+        if self.player.hp <= 0 and not self.success and self.num_of_player == 1:
             self.player.hp = 0
             text = "Game Over"
             render = self.over_font.render(text, True, (255, 255, 0))
             self.screen.blit(render, (200, 250))
+        # Double players
+        elif self.player.hp <= 0 and self.player2.hp <= 0 and not self.success and self.num_of_player == 2:
+            self.player.hp = 0
+            self.player2.hp = 0
+            text = "Game Over"
+            render = self.over_font.render(text, True, (255, 255, 0))
+            self.screen.blit(render, (200, 250))
+
         if self.success:
             text = "You Win"
             render = self.over_font.render(text, True, (255, 255, 0))
@@ -751,8 +764,14 @@ class Game:
 
         # check
         self.check()
-        if self.player.hp <= 0:
+        # Single player
+        if self.player.hp <= 0 and self.num_of_player == 1:
             self.player.hp = 0
+            self.screen.blit(self.restart_image, self.restart_rect)
+        # Double players
+        if self.player.hp <= 0 and self.player2.hp <= 0 and self.num_of_player == 2:
+            self.player.hp = 0
+            self.player2.hp = 0
             self.screen.blit(self.restart_image, self.restart_rect)
 
         # update screen
@@ -780,4 +799,4 @@ class Game:
 
 if __name__ == '__main__':
     game = Game()
-    game.start_game(1, 2)  # change mode of levels and players
+    game.start_game(0,2)  # change mode of levels and players
