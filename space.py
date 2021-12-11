@@ -475,17 +475,17 @@ class Game:
             # Random action
             # Vertical move
             if self.type_move == 1:
-                e.y += e.speed * 2
+                e.y += e.speed * 5
 
             # Different angle
             if e.x <= 400:
                 if self.type_move == 2:
                     e.x += e.speed * random.uniform(0.5, 1)
-                    e.y += e.speed * random.uniform(0.8, 1) * 2
+                    e.y += e.speed * random.uniform(0.8, 1) * 5
             elif e.x > 400:
                 if self.type_move == 2:
                     e.x -= e.speed * random.uniform(0.5, 1)
-                    e.y += e.speed * random.uniform(0.8, 1) * 2
+                    e.y += e.speed * random.uniform(0.8, 1) * 5
 
             # Horizontal move
             if self.type_move == 3:
@@ -515,6 +515,8 @@ class Game:
         if self.boss.health == 0:
             self.success = True
             self.enemies.clear()
+        if self.distance(self.boss.x+self.boss.image.get_width()/2, self.boss.y+self.boss.image.get_height()/2, self.player.x+self.player.img.get_width()/2, self.player.y+self.player.img.get_height()/2) < 50:
+            self.player.hp = 0  # player will die when touch the boss
         self.screen.blit(self.boss.image, (self.boss.x, self.boss.y))
         self.boss.update()
 
