@@ -43,6 +43,7 @@ class Game:
         self.score = 0
         self.over_font = pygame.font.Font('freesansbold.ttf', 64)
         self.font = pygame.font.Font('freesansbold.ttf', 32)
+        # self.is_over = False
         self.success = False
         self.stage1 = True
         self.stage2 = False
@@ -52,36 +53,31 @@ class Game:
         self.flag_DOWN = 0
         self.flag_LEFT = 0
         self.flag_UP = 0
-        self.flag_RIGHT_player2 = 0
-        self.flag_DOWN_player2 = 0
-        self.flag_LEFT_player2 = 0
-        self.flag_UP_player2 = 0
 
         self.number = 0
 
-        self.stage_point1 = [20, 30]
-        self.stage_point2 = [40, 50]
-        self.stage_point3 = [45, 65]
-
         # menu
-        self.menu_text = pygame.image.load("./Background/menu_text2.png")
         self.bgImg_menu = pygame.image.load('./Background/bg_menu.png')
 
+<<<<<<< HEAD
         self.start_image = pygame.image.load("./Menu/game_start.png").convert_alpha()
         self.start2_image = pygame.image.load("./Menu/game_start2.png").convert_alpha()
+=======
+        self.start_image = pygame.image.load("./Menu/game_play.png").convert_alpha()
+>>>>>>> 359de36f59204d549f20ba1b93b6d906e75b6c24
         self.ex_image = pygame.image.load("./Menu/quitgame.png").convert_alpha()
 
         self.menu_image = pygame.image.load("./Menu/menu.png").convert_alpha()
         self.menu_rect = self.menu_image.get_rect()
-        self.menu_rect.left, self.menu_rect.top = 340, 180
+        self.menu_rect.left, self.menu_rect.top = 300, 180
 
         self.menu_resume_image = pygame.image.load("./Menu/menu_resume.png").convert_alpha()
         self.menu_resume_rect = self.menu_resume_image.get_rect()
-        self.menu_resume_rect.left, self.menu_resume_rect.top = 400, 260
+        self.menu_resume_rect.left, self.menu_resume_rect.top = 400, 200
 
         self.menu_quit_image = pygame.image.load("./Menu/quitgame.png").convert_alpha()
         self.menu_quit_rect = self.menu_quit_image.get_rect()
-        self.menu_quit_rect.left, self.menu_quit_rect.top = 400, 330
+        self.menu_quit_rect.left, self.menu_quit_rect.top = 400, 300
 
         self.back_home_image = pygame.image.load("./Menu/home.png").convert_alpha()
         self.back_home_rect = self.back_home_image.get_rect()
@@ -103,11 +99,6 @@ class Game:
         self.pause_rect.left, self.pause_rect.top = 700, 10
         self.pause_image = self.game_pause_image
 
-        # next stage
-        self.nextstage_image = pygame.image.load("./Menu/nextstage.png").convert_alpha()
-        self.nextstage_rect = self.nextstage_image.get_rect()
-        self.nextstage_rect.left, self.nextstage_rect.top = 350, 450
-
         # pause music
         self.pause2 = False
 
@@ -124,9 +115,6 @@ class Game:
 
         # Init player
         self.player = Planeplayer()
-        if self.num_of_player == 2:
-            self.player = Planeplayer(250, 450)
-            self.player2 = Planeplayer(450, 450, "./Plane/player1.png")
 
         # Init bullets
         self.bullets = []
@@ -137,7 +125,7 @@ class Game:
         self.enemies = []
 
         for i in range(self.number_of_enemies):
-            self.Monster = Enemy(self.stage)
+            self.Monster = Enemy()
             self.enemies.append(self.Monster)
 
         self.boss_flag = False
@@ -149,7 +137,6 @@ class Game:
         pygame.mixer.music.load('./Background/bg.mp3')
         pygame.mixer.music.play(-1)
         self.screen.blit(self.bgImg_menu, (0, 0))
-        self.screen.blit(self.menu_text, (151, 60))
         start_button_rect = self.start_image.get_rect()
         start_button_rect.left, start_button_rect.top = 350, 300
 
@@ -183,7 +170,6 @@ class Game:
                 pygame.quit()
                 exit()
 
-            # Button click
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1 and self.pause_rect.collidepoint(event.pos):
                     self.pause = not self.pause
@@ -219,6 +205,7 @@ class Game:
                             b.speed = self.temp_bullet_speed[0]
                             del self.temp_bullet_speed[0]
                         for bb in self.boss_bullets:
+                        
                             bb.speed = self.temp_bossbullet_speed[0]
                             del self.temp_bossbullet_speed[0]
 
@@ -243,8 +230,9 @@ class Game:
                         del self.temp_bullet_speed[0]
 
                     for bb in self.boss_bullets:
-                        bb.speed = self.temp_bossbullet_speed[0]
-                        del self.temp_bossbullet_speed[0]
+                        
+                            bb.speed = self.temp_bossbullet_speed[0]
+                            del self.temp_bossbullet_speed[0]
 
                     for e in self.enemies:
                         e.speed = self.temp_speed[0]
@@ -265,7 +253,7 @@ class Game:
                     self.boss_bullets.clear()
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
-                        Monster = Enemy(self.stage)
+                        Monster = Enemy()
                         self.enemies.append(Monster)
                     self.player = Planeplayer()
                     self.score = 0
@@ -273,7 +261,7 @@ class Game:
                     self.stage1 = True
                     self.stage2 = False
                     self.stage3 = False
-                    self.start_game()
+                    self.start_game(1)
 
                 if event.button == 1 and self.restart_rect.collidepoint(event.pos):
                     self.enemies.clear()
@@ -284,7 +272,7 @@ class Game:
                     self.boss_bullets.clear()
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
-                        Monster = Enemy(self.stage)
+                        Monster = Enemy()
                         self.enemies.append(Monster)
                     self.player = Planeplayer()
                     # for e in enemies:
@@ -297,33 +285,7 @@ class Game:
                     self.stage1 = True
                     self.stage2 = False
                     self.stage3 = False
-                    self.start_game()
-
-                if event.button == 1 and self.nextstage_rect.collidepoint(event.pos):
-                    self.enemies.clear()
-                    try:
-                        del self.boss
-                    except:
-                        pass
-                    self.boss_bullets.clear()
-                    self.number_of_enemies = 2
-                    for i in range(self.number_of_enemies):
-                        Monster = Enemy(self.stage)
-                        self.enemies.append(Monster)
-                    self.player = Planeplayer()
-                    # for e in enemies:
-                    #    e.reset()
-                    #    e.speed = 0.7
-                    self.score = 0
-                    self.special_bullets = 3
-                    self.player.hp = 10
-                    # self.is_over = False
-                    self.stage1 = True
-                    self.stage2 = False
-                    self.stage3 = False
-                    self.stage += 1
-                    self.success = False
-                    self.start_game(self.stage)
+                    self.start_game(1)
 
                 if event.button == 1 and self.pause2_rect.collidepoint(event.pos):
                     self.pause2 = not self.pause2
@@ -335,7 +297,7 @@ class Game:
                         self.pause2_image = self.audio_off_image
                         pygame.mixer.music.play(-1)
                         self.explosion = pygame.mixer.Sound('./Sound Effect/exp.wav')
-
+            # Button click
             if not self.pause:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RIGHT:
@@ -354,36 +316,11 @@ class Game:
                         print("发射子弹...")
                         if self.score >= 70:  # double bullets
                             self.bullets.append(Bullet(self.player.x - self.player.img.get_width() / 3, self.player.y))
-                            self.bullets.append(Bullet(self.player.x + self.player.img.get_width() / 3, self.player.y))
+                            self.bullets.append(Bullet(self.player.x + self. player.img.get_width() / 3, self.player.y))
                             if self.score >= 100:  # triple bullets
                                 self.bullets.append(Bullet(self.player.x, self.player.y))
                         else:
                             self.bullets.append(Bullet(self.player.x, self.player.y))
-
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_d:
-                            self.player2.horizontal = 5
-                            self.flag_RIGHT_player2 = 1
-                        if event.key == pygame.K_a:
-                            self.player2.horizontal = -5
-                            self.flag_LEFT_player2 = 1
-                        if event.key == pygame.K_w:
-                            self.player2.vertical = -5
-                            self.flag_UP_player2 = 1
-                        if event.key == pygame.K_s:
-                            self.player2.vertical = 5
-                            self.flag_DOWN_player2 = 1
-                        if event.key == pygame.K_e and self.player2.hp != 0 and not self.success:
-                            print("发射子弹...")
-                            if self.score >= 70:  # double bullets
-                                self.bullets.append(
-                                    Bullet(self.player2.x - self.player2.img.get_width() / 3, self.player2.y))
-                                self.bullets.append(
-                                    Bullet(self.player2.x + self.player2.img.get_width() / 3, self.player2.y))
-                                if self.score >= 100:  # triple bullets
-                                    self.bullets.append(Bullet(self.player2.x, self.player2.y))
-                            else:
-                                self.bullets.append(Bullet(self.player2.x, self.player2.y))
                     if event.key == pygame.K_r and self.special_bullets > 0:  # 清屏炸弹
                         self.score += self.number_of_enemies * 5
                         for e in self.enemies:
@@ -417,87 +354,55 @@ class Game:
                                 self.player.vertical = 0
                             else:
                                 self.player.vertical = -5
-                    if event.key != pygame.K_e:
-                        if event.key == pygame.K_d:
-                            self.flag_RIGHT_player2 = 0
-                            if self.flag_LEFT_player2 == 0:
-                                self.player2.horizontal = 0
-                            else:
-                                self.player2.horizontal = -5
-                        if event.key == pygame.K_a:
-                            self.flag_LEFT_player2 = 0
-                            if self.flag_RIGHT_player2 == 0:
-                                self.player2.horizontal = 0
-                            else:
-                                self.player2.horizontal = 5
-                        if event.key == pygame.K_s:
-                            self.flag_DOWN_player2 = 0
-                            if self.flag_UP_player2 == 0:
-                                self.player2.vertical = 0
-                            else:
-                                self.player2.vertical = 5
-                        if event.key == pygame.K_w:
-                            self.flag_UP_player2 = 0
-                            if self.flag_DOWN_player2 == 0:
-                                self.player2.vertical = 0
-                            else:
-                                self.player2.vertical = -5
                 try:
                     if event.type == BOSS_BULLETS_EVENT and self.boss_flag and self.boss.y > -50 and self.boss.health > 0:
                         if self.boss.health <= 20:
                             pygame.time.set_timer(BOSS_BULLETS_EVENT, 700)
                             self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                                self.boss.y + self.boss.image.get_height() - 25,
-                                                                self.stage, 2))
+                                                                self.boss.y + self.boss.image.get_height() - 25, self.stage, 2))
                             self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                                self.boss.y + self.boss.image.get_height() - 25,
-                                                                self.stage, -2))
+                                                                self.boss.y + self.boss.image.get_height() - 25, self.stage, -2))
                         if self.number % 10 in range(7):
                             self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                                self.boss.y + self.boss.image.get_height() - 25,
-                                                                self.stage, 0))
+                                                                self.boss.y + self.boss.image.get_height() - 25, self.stage, 0))
                             self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                                self.boss.y + self.boss.image.get_height() - 25,
-                                                                self.stage, 1))
+                                                                self.boss.y + self.boss.image.get_height() - 25, self.stage, 1))
                             self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                                self.boss.y + self.boss.image.get_height() - 25,
-                                                                self.stage, -1))
+                                                                self.boss.y + self.boss.image.get_height() - 25, self.stage, -1))
                         else:
                             self.boss_bullets.append(BossBullet(self.boss.x + self.boss.image.get_width() / 2 - 25,
-                                                                self.boss.y + self.boss.image.get_height() - 25,
-                                                                self.stage, 0))
+                                                                self.boss.y + self.boss.image.get_height() - 25, self.stage, 0))
                         self.number += 1
                 except:
                     pass
 
     # Game difficulty
     def game_stage(self):
-
-        if self.score == self.stage_point1[self.stage] and len(self.enemies) >= 2 and self.stage1:
+        if self.score == 20 and len(self.enemies) >= 2 and self.stage1:
             self.enemies.clear()
             self.number_of_enemies = 4
             self.stage1, self.stage2 = False, True
             for i in range(self.number_of_enemies):
-                self.Monster = Enemy(self.stage)
-                # self.number_of_enemies = 4
+                self.Monster = Enemy()
+                #self.number_of_enemies = 4
                 self.enemies.append(self.Monster)
             return
-        if self.score == self.stage_point2[self.stage] and len(self.enemies) >= 4 and self.stage2:
+        if self.score == 40 and len(self.enemies) >= 4 and self.stage2:
             self.enemies.clear()
             self.stage2, self.stage3 = False, True
             self.number_of_enemies = 6
             for i in range(self.number_of_enemies):
-                self.Monster = Enemy(self.stage)
-                # self.number_of_enemies = 6
+                self.Monster = Enemy()
+                #self.number_of_enemies = 6
                 self.enemies.append(self.Monster)
             return
-        if self.score == self.stage_point3[self.stage] and len(self.enemies) >= 6 and self.stage3:
+        if self.score == 45 and len(self.enemies) >= 6 and self.stage3:
             # Init boss
             pygame.mixer.music.load('./Background/boss.mp3')
             pygame.mixer.music.play(-1)
             if self.pause2 == True:
                 pygame.mixer.music.stop()
-            self.boss = Boss(self.stage)
+            self.boss = Boss()
             self.boss_flag = True
 
     # Bullet display
@@ -510,12 +415,11 @@ class Game:
                 if self.distance(b.x, b.y, self.boss.x + 98, self.boss.y + 67) < 50:
                     self.boss.health -= 1
                     self.bullets.remove(b)
-                    print(f"health - 1\nhealth:{self.boss.health}")
-                    break
+                    print(f"health -= 1\nhealth:{self.boss.health}")
             except:
                 pass
-            # if b.y < -50:
-            #     self.bullets.remove(b)
+            if b.y < 0:
+                self.bullets.remove(b)
 
     # Bullet hit
     def hit(self, bullet):
@@ -534,27 +438,24 @@ class Game:
         for e in self.enemies:
             self.screen.blit(e.enemyImg, (e.x, e.y))
             # Random action
-            # Vertical move
+            ## Vertical move
             if self.type_move == 1:
-                e.y += e.speed * 2
-
-            # Different angle
+                e.y += e.speed
+            ## Different angle
             if e.x <= 400:
                 if self.type_move == 2:
                     e.x += e.speed * random.uniform(0.5, 1)
-                    e.y += e.speed * random.uniform(0.8, 1) * 2
+                    e.y += e.speed * random.uniform(0.8, 1)
             elif e.x > 400:
                 if self.type_move == 2:
                     e.x -= e.speed * random.uniform(0.5, 1)
-                    e.y += e.speed * random.uniform(0.8, 1) * 2
-
-            # Horizontal move
+                    e.y += e.speed * random.uniform(0.8, 1)
+            ## Horizontal move
             if self.type_move == 3:
                 if e.x < 50:
                     e.x += e.speed
                 elif e.x > 750:
                     e.x -= e.speed
-
             # Detect distance between enemy and player
             if self.distance(e.x, e.y, self.player.x, self.player.y) < 25:
                 if self.pause2 == False:
@@ -564,27 +465,9 @@ class Game:
                 self.enemies.remove(e)
                 self.enemies.append(e)
                 e.reset()
-                # Single player
-                if self.player.hp <= 0 and self.num_of_player == 1:
+                # self.is_over = True
+                if self.player.hp <= 0:
                     self.enemies.clear()
-                    #一号飞机移除
-                    pass
-            try:
-                if self.distance(e.x, e.y, self.player2.x, self.player2.y) < 25:
-                    if self.pause2 == False:
-                        self.explosion.play()
-                    self.player2.hp -= 1
-                    # Hit by enemies and reset this enemy
-                    self.enemies.remove(e)
-                    self.enemies.append(e)
-                    e.reset()
-                    # self.is_over = True
-            except:
-                pass
-            # Double players
-            if self.player.hp <= 0 and self.player2.hp <= 0 and self.num_of_player == 2:
-                #一号，二号飞机移除
-                self.enemies.clear()
             # Outside the screen = reset
             if e.y > 600:
                 e.reset()
@@ -612,21 +495,10 @@ class Game:
                     self.explosion.play()
 
                 self.boss_bullets.remove(b)
+                # self.is_over = True
                 if self.player.hp <= 0:
                     self.explosion.stop()
                     self.enemies.clear()
-
-            try:
-                if self.distance(b.x, b.y, self.player2.x, self.player2.y) < 50:
-                    self.player2.hp -= 1
-                    if self.pause2 == True:
-                        self.explosion.stop()
-                    else:
-                        self.explosion.play()
-
-                    self.boss_bullets.remove(b)
-            except:
-                pass
 
     # Distance formula
     def distance(self, bx, by, ex, ey):
@@ -637,32 +509,28 @@ class Game:
     # Display level up
     def level_up(self):
 
-        if self.score == self.stage_point1[self.stage]:
+        if self.score == 20:
             text = "Level up!"
-            level_render = self.over_font.render(text, True, (255, 105, 180))
-            self.screen.blit(level_render, (300, 300))
-
-        elif self.score == self.stage_point2[self.stage]:
+            level_render = self.over_font.render(text,True,(255,105,180))
+            self.screen.blit(level_render,(300,300))
+        
+        elif self.score == 45:
             text = "The boss is coming!!!"
-            level_render = self.over_font.render(text, True, (255, 105, 180))
-            self.screen.blit(level_render, (50, 300))
-
+            level_render = self.over_font.render(text,True,(255,105,180))
+            self.screen.blit(level_render,(100,300))
+        
         else:
-            text = ""
-            level_render = self.font.render(text, True, (255, 105, 180))
-            self.screen.blit(level_render, (300, 300))
+            text = " "
+            level_render = self.font.render(text,True,(255,105,180))
+            self.screen.blit(level_render,(300,300))
 
+        #pygame.display.update()
+        
     # Display score
     def show_score(self):
-        text = f"Score:{self.score}, BB:{self.special_bullets}"
-        text1 = f"Level: {self.stage + 1}"
-        hp1 = f"HP:{self.player.hp}"
+        text = f"Score:{self.score}, BB:{self.special_bullets}, HP:{self.player.hp}"
         score_render = self.font.render(text, True, (255, 255, 255))
-        score_render1 = self.font.render(text1, True, (255, 255, 255))
-        hp1_render = self.font.render(hp1, True, (255, 255, 255))
         self.screen.blit(score_render, (10, 10))
-        self.screen.blit(score_render1, (10, 50))
-        self.screen.blit(hp1_render, (450, 10))
 
     # Player and Boss HP display
     def show_health(self, hp):
@@ -675,25 +543,12 @@ class Game:
         # Draw Max HP bar and Current HP bar
         pygame.draw.rect(self.screen, (255, 0, 0), (red_x, red_y, red_width, red_height))
         pygame.draw.rect(self.screen, (0, 255, 0), (green_x, green_y, green_width, green_height))
-
-        # Player2
-        try:
-            hp2 = self.player2.hp
-            red_x2, red_y2 = 550, 50
-            green_x2, green_y2 = 550, 50
-            green_width2, green_height = 130 - 13 * (10 - hp2), 10
-            # Draw Max HP bar and Current HP bar
-            pygame.draw.rect(self.screen, (255, 0, 0), (red_x2, red_y2, red_width, red_height))
-            pygame.draw.rect(self.screen, (0, 255, 0), (green_x2, green_y2, green_width2, green_height))
-        except:
-            pass
-
         # Boss
         try:
             bossHP = self.boss.health
-            red_x, red_y = 300, 20
+            red_x, red_y = 350, 20
             red_width, red_height = 130, 10
-            green_x, green_y = 300, 20
+            green_x, green_y = 350, 20
             green_width, green_height = 130 * (self.boss.health / 50), 10
             # Draw Max HP bar and Current HP bar
             pygame.draw.rect(self.screen, (255, 0, 0), (red_x, red_y, red_width, red_height))
@@ -701,27 +556,19 @@ class Game:
         except:
             pass
 
+        pygame.display.update()
+
     # Game complete
     def check(self):
-        # Single player
-        if self.player.hp <= 0 and not self.success and self.num_of_player == 1:
+        if self.player.hp <= 0:
             self.player.hp = 0
             text = "Game Over"
             render = self.over_font.render(text, True, (255, 255, 0))
             self.screen.blit(render, (200, 250))
-        # Double players
-        elif self.player.hp <= 0 and self.player2.hp <= 0 and not self.success and self.num_of_player == 2:
-            self.player.hp = 0
-            self.player2.hp = 0
-            text = "Game Over"
-            render = self.over_font.render(text, True, (255, 255, 0))
-            self.screen.blit(render, (200, 250))
-
         if self.success:
             text = "You Win"
             render = self.over_font.render(text, True, (255, 255, 0))
             self.screen.blit(render, (self.SCREEN_WIDTH / 2 - 100, self.SCREEN_HEIGHT / 2 - 50))
-            self.screen.blit(self.nextstage_image, self.nextstage_rect)
 
     # Game refresh
     def refresh(self):
@@ -734,10 +581,6 @@ class Game:
 
         # refresh player
         self.screen.blit(self.player.img, (self.player.x, self.player.y))
-        try:
-            self.screen.blit(self.player2.img, (self.player2.x, self.player2.y))
-        except:
-            pass
 
         # refresh objects 
         self.show_bullets()
@@ -754,8 +597,7 @@ class Game:
 
         # refresh level
         self.level_up()
-
-        self.show_health(self.player.hp)
+        
         # refresh score
         self.show_score()
 
@@ -768,39 +610,29 @@ class Game:
 
         # check
         self.check()
-        # Single player
-        if self.player.hp <= 0 and self.num_of_player == 1:
+        if self.player.hp <= 0:
             self.player.hp = 0
-            self.screen.blit(self.restart_image, self.restart_rect)
-        # Double players
-        if self.player.hp <= 0 and self.player2.hp <= 0 and self.num_of_player == 2:
-            self.player.hp = 0
-            self.player2.hp = 0
             self.screen.blit(self.restart_image, self.restart_rect)
 
         # update screen
         pygame.display.update()
 
-    def start_game(self, stage=0, num_of_player=1):
+    def start_game(self, stage=0):
         self.stage = stage
-        self.num_of_player = num_of_player
         self.init_object()
         self.pause = False
         self.pause2 = False
-        if self.stage == 0:
-            self.menu()
+        self.menu()
         while True:
             self.clock.tick(self.FRAME)
             self.handle_events()
             self.game_stage()
+            self.show_health(self.player.hp)
             self.player.move_player()
-            try:
-                self.player2.move_player()
-            except:
-                pass
             self.refresh()
 
 
 if __name__ == '__main__':
     game = Game()
-    game.start_game(0,2)  # change mode of levels and players
+    # game.start_game()
+    game.start_game(1)
