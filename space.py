@@ -8,7 +8,7 @@ from Plane.player import *
 from Bullet.bullets import *
 from Enemy.boss import *
 from Bullet.boss_bullets import *
-from pygame.constants import MOUSEBUTTONDOWN, MOUSEMOTION
+from pygame.constants import MOUSEBUTTONDOWN
 from Menu.my_menu import *
 
 
