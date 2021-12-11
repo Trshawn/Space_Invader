@@ -55,6 +55,10 @@ class Game:
         self.flag_UP = 0
 
         self.number = 0
+        # stage
+        self.stage_point1 = [20, 30]
+        self.stage_point2 = [40, 50]
+        self.stage_point3 = [45, 65]
 
         # menu
         self.menu_text = pygame.image.load("./Background/menu_text2.png")
@@ -82,7 +86,12 @@ class Game:
         # restart
         self.restart_image = pygame.image.load("./Menu/restart.png").convert_alpha()
         self.restart_rect = self.restart_image.get_rect()
-        self.restart_rect.left, self.restart_rect.top = 350, 350
+        self.restart_rect.left, self.restart_rect.top = 350, 250
+
+        # next stage
+        self.nextstage_image = pygame.image.load("./Menu/nextstage.png").convert_alpha()
+        self.nextstage_rect = self.nextstage_image.get_rect()
+        self.nextstage_rect.left, self.nextstage_rect.top = 350, 450
 
         # game pause
         self.pause = False
@@ -281,6 +290,33 @@ class Game:
                     self.stage3 = False
                     self.start_game()
 
+                if event.button == 1 and self.nextstage_rect.collidepoint(event.pos):
+                    self.enemies.clear()
+                    try:
+                        del self.boss
+                    except:
+                        pass
+                    self.boss_bullets.clear()
+                    self.number_of_enemies = 2
+                    for i in range(self.number_of_enemies):
+                        Monster = Enemy()
+                        self.enemies.append(Monster)
+                    self.player = Planeplayer()
+                    # for e in enemies:
+                    #    e.reset()
+                    #    e.speed = 0.7
+                    self.score = 0
+                    self.special_bullets = 3
+                    self.player.hp = 10
+                    # self.is_over = False
+                    self.stage1 = True
+                    self.stage2 = False
+                    self.stage3 = False
+                    self.stage += 1
+                    self.success = False
+                    self.start_game(self.stage)
+
+
                 if event.button == 1 and self.pause2_rect.collidepoint(event.pos):
                     self.pause2 = not self.pause2
                     if self.pause2:
@@ -372,10 +408,7 @@ class Game:
 
     # Game difficulty
     def game_stage(self):
-        stage_point1 = [20, 30]
-        stage_point2 = [40, 50]
-        stage_point3 = [45, 65]
-        if self.score == stage_point1[self.stage] and len(self.enemies) >= 2 and self.stage1:
+        if self.score == self.stage_point1[self.stage] and len(self.enemies) >= 2 and self.stage1:
             self.enemies.clear()
             self.number_of_enemies = 4
             self.stage1, self.stage2 = False, True
@@ -384,7 +417,7 @@ class Game:
                 #self.number_of_enemies = 4
                 self.enemies.append(self.Monster)
             return
-        if self.score == stage_point2[self.stage] and len(self.enemies) >= 4 and self.stage2:
+        if self.score == self.stage_point2[self.stage] and len(self.enemies) >= 4 and self.stage2:
             self.enemies.clear()
             self.stage2, self.stage3 = False, True
             self.number_of_enemies = 6
@@ -393,7 +426,7 @@ class Game:
                 #self.number_of_enemies = 6
                 self.enemies.append(self.Monster)
             return
-        if self.score == stage_point3[self.stage] and len(self.enemies) >= 6 and self.stage3:
+        if self.score == self.stage_point3[self.stage] and len(self.enemies) >= 6 and self.stage3:
             # Init boss
             pygame.mixer.music.load('./Background/boss.mp3')
             pygame.mixer.music.play(-1)
@@ -507,15 +540,15 @@ class Game:
     # Display level up
     def level_up(self):
 
-        if self.score == 20:
+        if self.score == self.stage_point1[self.stage]:
             text = "Level up!"
             level_render = self.over_font.render(text,True,(255,105,180))
             self.screen.blit(level_render,(300,300))
         
-        elif self.score == 45:
+        elif self.score == self.stage_point2[self.stage]:
             text = "The boss is coming!!!"
             level_render = self.over_font.render(text,True,(255,105,180))
-            self.screen.blit(level_render,(200,300))
+            self.screen.blit(level_render,(90,300))
         
         else:
             text = " "
@@ -527,8 +560,11 @@ class Game:
     # Display score
     def show_score(self):
         text = f"Score:{self.score}, BB:{self.special_bullets}, HP:{self.player.hp}"
+        text2 = f"Level: {self.stage+1}"
         score_render = self.font.render(text, True, (255, 255, 255))
+        score_render2 = self.font.render(text2, True, (255, 255, 255))
         self.screen.blit(score_render, (10, 10))
+        self.screen.blit(score_render2, (10, 50))
 
     # Player and Boss HP display
     def show_health(self, hp):
@@ -567,6 +603,7 @@ class Game:
             text = "You Win"
             render = self.over_font.render(text, True, (255, 255, 0))
             self.screen.blit(render, (self.SCREEN_WIDTH / 2 - 100, self.SCREEN_HEIGHT / 2 - 50))
+            self.screen.blit(self.nextstage_image, self.nextstage_rect)
 
     # Game refresh
     def refresh(self):
