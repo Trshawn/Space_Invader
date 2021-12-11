@@ -1,7 +1,7 @@
 import pygame
 
 imgs = ["./Background/bg.png",
-        "./Background/bg.png"]
+        "./Background/bg1.png"]
 
 
 class Background(pygame.sprite.Sprite):
