@@ -68,6 +68,7 @@ class Game:
         self.bgImg_menu = pygame.image.load('./Background/bg_menu.png')
 
         self.start_image = pygame.image.load("./Menu/game_start.png").convert_alpha()
+        self.start2_image = pygame.image.load("./Menu/game_start2.png").convert_alpha()
         self.ex_image = pygame.image.load("./Menu/quitgame.png").convert_alpha()
 
         self.menu_image = pygame.image.load("./Menu/menu.png").convert_alpha()
@@ -151,7 +152,10 @@ class Game:
         self.screen.blit(self.menu_text, (151, 60))
         start_button_rect = self.start_image.get_rect()
         start_button_rect.left, start_button_rect.top = 350, 300
+
         self.screen.blit(self.start_image, start_button_rect)
+        self.start2_rect = self.start2_image.get_rect()
+        self.start2_rect.left, self.start2_rect.top = 350, 400
 
         ex_button_rect = self.ex_image.get_rect()
         ex_button_rect.left, ex_button_rect.top = 350, 500
