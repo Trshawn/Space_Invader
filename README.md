@@ -24,7 +24,7 @@
 - Code
 --------------------------------------------------------------------
 ### space.py
-- The main game running program
+- The main game running program, containing almost all the game functions
 ### player.py
 - Generate player plane
 ### my_menu.py

@@ -316,6 +316,7 @@ class Game:
                         del self.boss
                     except:
                         pass
+                    
                     self.boss_bullets.clear()
                     self.number_of_enemies = 2
                     for i in range(self.number_of_enemies):
