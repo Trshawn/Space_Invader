@@ -522,7 +522,7 @@ class Game:
             self.hit(b)
             b.y -= b.speed
             try:
-                if self.distance(b.x, b.y, self.boss.x + 98, self.boss.y + 67) < 50:
+                if self.boss.x - 20 < b.x < self.boss.x + self.boss.image.get_width() + 20 and self.boss.y < b.y < self.boss.y + self.boss.image.get_height() - 50:
                     self.boss.health -= 1
                     self.bullets.remove(b)
                     print(f"health - 1\nhealth:{self.boss.health}")
