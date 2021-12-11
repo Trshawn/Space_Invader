@@ -64,7 +64,7 @@ class Game:
         self.menu_text = pygame.image.load("./Background/menu_text2.png")
         self.bgImg_menu = pygame.image.load('./Background/bg_menu.png')
 
-        self.start_image = pygame.image.load("./Menu/game_play.png").convert_alpha()
+        self.start_image = pygame.image.load("./Menu/game_start.png").convert_alpha()
         self.ex_image = pygame.image.load("./Menu/quitgame.png").convert_alpha()
 
         self.menu_image = pygame.image.load("./Menu/menu.png").convert_alpha()
