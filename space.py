@@ -574,7 +574,6 @@ class Game:
                 # Single player
                 if self.player.hp <= 0 and self.num_of_player == 1:
                     self.enemies.clear()
-                    self.player=Planeplayer(-100,-1000000)
                     
             try:
                 if self.distance(e.x, e.y, self.player2.x, self.player2.y) < 25:
@@ -589,10 +588,6 @@ class Game:
             except:
                 pass
             # Double players
-            if self.player.hp <= 0 and self.num_of_player == 2:
-                self.player=Planeplayer(-200,-1000)
-            if self.player2.hp<=0 and self.num_of_player ==2:
-                self.player2=Planeplayer(-100,-1000)
             if self.player2.hp<=0 and self.num_of_player ==2 and self.player.hp<=0:
                 self.enemies.clear()
             # Outside the screen = reset
