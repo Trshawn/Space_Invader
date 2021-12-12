@@ -339,7 +339,7 @@ class Game:
                         game.start_game(self.stage, self.num_of_player)
                     self.success = False
                     self.stage += 1
-                    self.start_game(self.stage, self.num_of_player)
+                    self.start_game(self.stage, self.num_of_player,self.pause2)
 
                 if event.button == 1 and self.pause2_rect.collidepoint(event.pos):
                     self.pause2 = not self.pause2
@@ -812,12 +812,12 @@ class Game:
         # update screen
         pygame.display.update()
 
-    def start_game(self, stage=0, num_of_player=1):
+    def start_game(self, stage=0, num_of_player=1, pause2=False):
         self.stage = stage
         self.num_of_player = num_of_player
         self.init_object()
         self.pause = False
-        self.pause2 = False
+        self.pause2 = pause2
         if self.stage == 0 and self.num_of_player == 1:
             self.menu()
         while True:
