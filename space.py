@@ -390,7 +390,7 @@ class Game:
                             self.player2.vertical = 5
                             self.flag_DOWN_player2 = 1
                         if event.key == pygame.K_e and self.player2.hp != 0 and not self.success:
-                            print("发射子弹...")
+                            print("Firing bullet...")
                             if self.score >= 70:  # double bullets
                                 self.bullets.append(
                                     Bullet(self.player2.x - self.player2.img.get_width() / 3, self.player2.y))
