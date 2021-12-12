@@ -801,10 +801,13 @@ class Game:
             self.player.hp = 0
             self.screen.blit(self.restart_image, self.restart_rect)
         # Double players
-        if self.player.hp <= 0 and self.player2.hp <= 0 and self.num_of_player == 2:
-            self.player.hp = 0
-            self.player2.hp = 0
-            self.screen.blit(self.restart_image, self.restart_rect)
+        try:
+            if self.player.hp <= 0 and self.player2.hp <= 0 and self.num_of_player == 2:
+                self.player.hp = 0
+                self.player2.hp = 0
+                self.screen.blit(self.restart_image, self.restart_rect)
+        except:
+            pass
 
         # update screen
         pygame.display.update()
