@@ -202,11 +202,9 @@ class Game:
                             bb.speed = 0
 
                         self.temp_speed = []
-                        # temp_y = []
                         for e in self.enemies:
                             self.temp_speed.append(e.speed)
                             e.speed = 0
-                            # e.move_down = 0
                         try:
                             self.temp_ver = self.boss.vertical
                             self.tmep_hor = self.boss.horizontal
@@ -228,7 +226,6 @@ class Game:
                         for e in self.enemies:
                             e.speed = self.temp_speed[0]
                             del self.temp_speed[0]
-                            # e.move_down = 40
                         try:
                             self.boss.vertical = self.temp_ver
                             self.boss.horizontal = self.tmep_hor
@@ -259,7 +256,6 @@ class Game:
                         pass
 
                 if event.button == 1 and self.back_home_rect.collidepoint(event.pos):
-                    # running = False
                     self.enemies.clear()
                     try:
                         del self.boss
@@ -298,13 +294,9 @@ class Game:
                         Monster = Enemy(self.stage)
                         self.enemies.append(Monster)
                     self.player = Planeplayer()
-                    # for e in enemies:
-                    #    e.reset()
-                    #    e.speed = 0.7
                     self.score = 0
                     self.special_bullets = 3
                     self.player.hp = 10
-                    # self.is_over = False
                     self.stage1 = True
                     self.stage2 = False
                     self.stage3 = False
@@ -323,13 +315,9 @@ class Game:
                         Monster = Enemy(self.stage)
                         self.enemies.append(Monster)
                     self.player = Planeplayer()
-                    # for e in enemies:
-                    #    e.reset()
-                    #    e.speed = 0.7
                     self.score = 0
                     self.special_bullets = 3
                     self.player.hp = 10
-                    # self.is_over = False
                     self.stage1 = True
                     self.stage2 = False
                     self.stage3 = False
@@ -400,7 +388,7 @@ class Game:
                                     self.bullets.append(Bullet(self.player2.x, self.player2.y))
                             else:
                                 self.bullets.append(Bullet(self.player2.x, self.player2.y))
-                    if event.key == pygame.K_r and self.special_bullets > 0:  # 清屏炸弹
+                    if event.key == pygame.K_r and self.special_bullets > 0:  # Special bombs
                         self.score += self.number_of_enemies * 5
                         for e in self.enemies:
                             e.reset()
@@ -495,7 +483,6 @@ class Game:
             self.stage1, self.stage2 = False, True
             for i in range(self.number_of_enemies):
                 self.Monster = Enemy(self.stage)
-                # self.number_of_enemies = 4
                 self.enemies.append(self.Monster)
             return
         if self.score == self.stage_point2[self.stage] and len(self.enemies) >= 4 and self.stage2:
@@ -504,7 +491,6 @@ class Game:
             self.number_of_enemies = 6
             for i in range(self.number_of_enemies):
                 self.Monster = Enemy(self.stage)
-                # self.number_of_enemies = 6
                 self.enemies.append(self.Monster)
             return
         if self.score == self.stage_point3[self.stage] and len(self.enemies) >= 6 and self.stage3:
@@ -530,8 +516,6 @@ class Game:
                     break
             except:
                 pass
-            # if b.y < -50:
-            #     self.bullets.remove(b)
 
     # Bullet hit
     def hit(self, bullet):
@@ -593,7 +577,6 @@ class Game:
                     self.enemies.remove(e)
                     self.enemies.append(e)
                     e.reset()
-                    # self.is_over = True
             except:
                 pass
             # Double players
